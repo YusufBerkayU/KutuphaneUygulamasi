@@ -8,6 +8,7 @@ namespace KutuphaneUygulamasi.Controllers
         {
             return View();
         }
+
         public IActionResult AddBook()
         {
             return View();
@@ -32,5 +33,6 @@ namespace KutuphaneUygulamasi.Controllers
         {
             return View();
         }
+
     }
 }
