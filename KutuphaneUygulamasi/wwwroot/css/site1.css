@@ -1,0 +1,56 @@
+﻿/* Genel Stil Ayarları */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa; /* Çok açık gri */
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    padding: 15px;
+    background-color: #ffffff; /* Beyaz */
+    border-bottom: 2px solid #e0e0e0; /* Açık gri */
+}
+
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333 !important; /* Koyu gri */
+}
+
+.navbar-nav .nav-link {
+    font-size: 1em;
+    margin-left: 15px;
+    color: #333 !important; /* Koyu gri */
+}
+
+    .navbar-nav .nav-link:hover {
+        text-decoration: underline;
+    }
+
+.footer {
+    background-color: #ffffff; /* Beyaz */
+    color: #333; /* Koyu gri */
+    padding: 20px;
+    text-align: center; /* Metni ortalar */
+}
+
+    .footer p {
+        margin: 0;
+    }
+
+/* Container ve İçerik Stilleri */
+.container {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #ffffff; /* Beyaz */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+}
+
+/* Ekstra Stil Düzenlemeleri */
+.btn-primary, .btn-primary:hover {
+    background-color: #e0e0e0 !important; /* Buton rengi açık gri */
+    color: #333 !important; /* Buton metin rengi koyu gri */
+    border: 1px solid #d5d5d5; /* Buton kenar rengi */
+}

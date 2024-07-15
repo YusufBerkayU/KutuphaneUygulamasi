@@ -1,0 +1,54 @@
+﻿/* Ana Sayfa Stil Ayarları */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+.welcome-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('https://example.com/background-image.jpg') no-repeat center center fixed; /* Arka Plan Resmi */
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+}
+
+.welcome-content {
+    background: rgba(255, 255, 255, 0.9); /* Daha açık renkli yarı saydam arka plan */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px; /* İçeriği sınırlandırarak daha düzenli görünmesini sağlar */
+    margin: 20px; /* Etrafına biraz boşluk ekler */
+}
+
+    .welcome-content h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+        color: #333; /* Açık koyu renkli başlık */
+    }
+
+    .welcome-content p {
+        font-size: 1.2em;
+        margin-bottom: 30px;
+        color: #666; /* Açık gri paragraf rengi */
+    }
+
+.btn-primary {
+    background: #4ea9ff; /* Daha açık gökyüzü mavisi */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s ease; /* Yumuşak geçiş efekti */
+}
+
+    .btn-primary:hover {
+        background: #3399ff; /* Hover rengi */
+    }
