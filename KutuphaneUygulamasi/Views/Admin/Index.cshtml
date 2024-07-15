@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/admin.css" />
+</head>
+<body>
+    <div class="wrapper">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Paneline Hoþgeldiniz</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="@Url.Action("AddBook", "Admin")">Kitap Ekle</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("ListBooks", "Admin")">Kitap Listesi</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("ListMembers", "Admin")">Üye Listesi</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("AddMember", "Admin")">Üye Ekle</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("SetMemberRole", "Admin")">Üye Rolü Belirle</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span>Toggle Sidebar</span>
+                    </button>
+                </div>
+            </nav>
+
+            <h2>@ViewData["Title"]</h2>
+            <div class="line"></div>
+
+            
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
