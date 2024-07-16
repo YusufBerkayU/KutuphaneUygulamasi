@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Kitap Ekle";
+}
+
+<h2>Kitap Ekle</h2>
+
+<form method="post" asp-action="AddBook">
+    <div class="form-group">
+        <label for="BookTitle">Kitap Başlığı</label>
+        <input type="text" class="form-control" id="BookTitle" name="BookTitle" required />
+    </div>
+    <div class="form-group">
+        <label for="Author">Yazar</label>
+        <input type="text" class="form-control" id="Author" name="Author" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Ekle</button>
+</form>
