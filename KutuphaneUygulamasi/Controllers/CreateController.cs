@@ -42,7 +42,7 @@ namespace KutuphaneUygulamasi.Controllers
                 model.PdfFilePath = "/pdfs/" + fileName;
             }
 
-            // Model doğrulaması dosya yolunu ayarladıktan sonra yapılır
+            
             if (ModelState.IsValid)
             {
                 _context.Books.Add(model);
