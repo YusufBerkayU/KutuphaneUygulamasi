@@ -1,17 +1,22 @@
 ﻿@model IEnumerable<KutuphaneUygulamasi.Models.Book>
 
+@{
+    ViewData["Title"] = "Kitap Listesi";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kitap Listesi - Kütüphane</title>
+    <title>@ViewData["Title"] - Kütüphane</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site1.css" />
 </head>
 <body>
     <div class="container mt-4">
         <h1>Kitap Listesi</h1>
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Başlık</th>
@@ -28,7 +33,14 @@
                         <td>@book.Author</td>
                         <td>@book.Description</td>
                         <td>
-                            <a href="@Url.Content(book.PdfFilePath)" target="_blank">PDF'yi Görüntüle</a>
+                            @if (!string.IsNullOrEmpty(book.PdfFilePath))
+                            {
+                                <a href="@Url.Content(book.PdfFilePath)" target="_blank">PDF Görüntüle</a>
+                            }
+                            else
+                            {
+                                <span>PDF Yok</span>
+                            }
                         </td>
                     </tr>
                 }

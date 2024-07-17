@@ -20,39 +20,15 @@ namespace KutuphaneUygulamasi.Controllers
 
         public IActionResult AddBook()
         {
-            return View();
+            return RedirectToAction("AddBook", "Create");
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddBook(Book model, IFormFile pdfFile)
-        {
-            if (ModelState.IsValid)
-            {
-                if (pdfFile != null && pdfFile.Length > 0)
-                {
-                    var filePath = Path.Combine("wwwroot/pdfs", pdfFile.FileName);
 
-                    // Save the file to the server
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await pdfFile.CopyToAsync(stream);
-                    }
 
-                    model.PdfFilePath = filePath;
-                }
 
-                _context.Books.Add(model);
-                await _context.SaveChangesAsync();
-
-                return RedirectToAction("ListBooks","Admin");
-            }
-
-            return View(model);
-        }
 
         public IActionResult ListBooks()
         {
-            return View();
+            return RedirectToAction("ListBooks", "Create");
         }
 
         public IActionResult ListMembers()

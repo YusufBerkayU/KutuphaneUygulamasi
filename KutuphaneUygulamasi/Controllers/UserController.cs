@@ -12,11 +12,17 @@ namespace KutuphaneUygulamasi.Controllers
             return View();
         }
 
-        // Kitap ekleme sayfası
         public IActionResult AddBook()
         {
-            return View();
+            return RedirectToAction("AddBook", "Create");
         }
+
+
+        public IActionResult ListBooks()
+        {
+            return RedirectToAction("ListBooks", "Create");
+        }
+
 
         // Kitap seçme sayfası
         public IActionResult SelectBook()

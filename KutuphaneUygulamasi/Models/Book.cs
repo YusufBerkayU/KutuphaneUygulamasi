@@ -15,7 +15,7 @@ namespace KutuphaneUygulamasi.Models
         [Required]
         public string Description { get; set; }
 
-        [Required]
+        
         public string PdfFilePath { get; set; }
     }
 }
