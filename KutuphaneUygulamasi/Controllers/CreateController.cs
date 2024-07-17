@@ -25,29 +25,43 @@ namespace KutuphaneUygulamasi.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBook(Book model, IFormFile pdfFile)
         {
-            if (ModelState.IsValid)
+            if (pdfFile != null && pdfFile.Length > 0)
             {
-                if (pdfFile != null && pdfFile.Length > 0)
+                // GUID kullanarak benzersiz bir dosya adı oluşturun
+                var fileExtension = Path.GetExtension(pdfFile.FileName); // Dosya uzantısını alın
+                var fileName = $"{Guid.NewGuid()}{fileExtension}"; // GUID ve uzantıyı birleştirin
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/pdfs", fileName);
+
+                // Dosyayı kaydet
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    var filePath = Path.Combine("wwwroot/pdfs", pdfFile.FileName);
-
-                    // Save the file to the server
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await pdfFile.CopyToAsync(stream);
-                    }
-
-                    model.PdfFilePath = filePath;
+                    await pdfFile.CopyToAsync(stream);
                 }
 
+                // Dosya yolunu veritabanına kaydedin
+                model.PdfFilePath = "/pdfs/" + fileName;
+            }
+
+            // Model doğrulaması dosya yolunu ayarladıktan sonra yapılır
+            if (ModelState.IsValid)
+            {
                 _context.Books.Add(model);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("ListBooks");
+                return RedirectToAction("ListBooks", "Create");
+            }
+
+            // ModelState geçersizse, doğrulama hatalarını kontrol edin
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            foreach (var error in errors)
+            {
+                Console.WriteLine(error.ErrorMessage);
             }
 
             return View(model);
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> ListBooks()
