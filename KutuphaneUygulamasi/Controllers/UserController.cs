@@ -24,10 +24,5 @@ namespace KutuphaneUygulamasi.Controllers
         }
 
 
-        // Kitap seçme sayfası
-        public IActionResult SelectBook()
-        {
-            return View();
-        }
-    }
+    }   
 }
