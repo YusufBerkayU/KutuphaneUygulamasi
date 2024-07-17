@@ -4,6 +4,7 @@ namespace KutuphaneUygulamasi.Models
 {
     public class Book
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
