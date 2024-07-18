@@ -36,12 +36,12 @@ namespace KutuphaneUygulamasi.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Kullanıcıyı e-posta ile bulmaya çalışıyoruz
+               
                 var user = await _userManager.FindByEmailAsync(model.Email);
 
                 if (user == null)
                 {
-                    // Eğer kullanıcı e-posta ile bulunamazsa, kullanıcı adı ile bulmaya çalışın
+                    
                     user = await _userManager.FindByNameAsync(model.Email);
                 }
 
@@ -113,7 +113,7 @@ namespace KutuphaneUygulamasi.Controllers
                         {
                             ModelState.AddModelError(string.Empty, error.Description);
                         }
-                        return View(model); // Hata durumunda model ile birlikte sayfayı yeniden göster
+                        return View(model); 
                     }
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
