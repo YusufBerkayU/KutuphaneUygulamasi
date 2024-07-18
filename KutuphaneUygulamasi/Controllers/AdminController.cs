@@ -3,6 +3,7 @@ using KutuphaneUygulamasi.Models;
 using KutuphaneUygulamasi.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace KutuphaneUygulamasi.Controllers
@@ -170,7 +171,7 @@ namespace KutuphaneUygulamasi.Controllers
         }
 
 
-    
+
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -203,11 +204,62 @@ namespace KutuphaneUygulamasi.Controllers
 
 
 
-
-        public IActionResult SetMemberRole()
+        [HttpGet]
+        public async Task<IActionResult> SetMemberRole()
         {
-            return View();
+            var users = await _userManager.Users.ToListAsync();
+            var model = new SetMemberRoleViewModel
+            {
+                Users = users.Select(u => new SelectListItem
+                {
+                    Value = u.Id,
+                    Text = u.Email
+                }).ToList()
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetMemberRole(SetMemberRoleViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(model.UserId);
+                if (user != null)
+                {
+                    // Remove existing roles
+                    var currentRoles = await _userManager.GetRolesAsync(user);
+                    var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                    if (!removeResult.Succeeded)
+                    {
+                        ModelState.AddModelError("", "Failed to remove user roles");
+                        return View(model);
+                    }
+
+                    // Add new role
+                    var addResult = await _userManager.AddToRoleAsync(user, model.Role);
+                    if (addResult.Succeeded)
+                    {
+                        return RedirectToAction("ListMembers");
+                    }
+                    foreach (var error in addResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
+            }
+
+            // If ModelState is not valid or operation fails, return to the view with errors
+            var users = await _userManager.Users.ToListAsync();
+            model.Users = users.Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = u.Email
+            }).ToList();
+            return View(model);
         }
 
     }
-}
+    }
+
