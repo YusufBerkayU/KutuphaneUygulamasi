@@ -219,6 +219,7 @@ namespace KutuphaneUygulamasi.Controllers
             return View(model);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SetMemberRole(SetMemberRoleViewModel model)
@@ -228,7 +229,7 @@ namespace KutuphaneUygulamasi.Controllers
                 var user = await _userManager.FindByIdAsync(model.UserId);
                 if (user != null)
                 {
-                    // Remove existing roles
+                    // Mevcut rolleri kaldır
                     var currentRoles = await _userManager.GetRolesAsync(user);
                     var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
                     if (!removeResult.Succeeded)
@@ -237,7 +238,7 @@ namespace KutuphaneUygulamasi.Controllers
                         return View(model);
                     }
 
-                    // Add new role
+                    // Yeni rol ekle
                     var addResult = await _userManager.AddToRoleAsync(user, model.Role);
                     if (addResult.Succeeded)
                     {
@@ -250,7 +251,7 @@ namespace KutuphaneUygulamasi.Controllers
                 }
             }
 
-            // If ModelState is not valid or operation fails, return to the view with errors
+            // ModelState geçerli değilse veya işlemler başarısız olursa, kullanıcı listesini tekrar yükleyin
             var users = await _userManager.Users.ToListAsync();
             model.Users = users.Select(u => new SelectListItem
             {
@@ -259,7 +260,6 @@ namespace KutuphaneUygulamasi.Controllers
             }).ToList();
             return View(model);
         }
-
     }
-    }
+}
 

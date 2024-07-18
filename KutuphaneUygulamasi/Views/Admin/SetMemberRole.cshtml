@@ -4,7 +4,7 @@
     ViewData["Title"] = "Set Member Role";
 }
 
-<h1>Set Member Role</h1>
+<h1>@ViewData["Title"]</h1>
 
 <form asp-action="SetMemberRole" method="post">
     <div class="form-group">
@@ -23,3 +23,9 @@
     </div>
     <button type="submit" class="btn btn-primary">Set Role</button>
 </form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

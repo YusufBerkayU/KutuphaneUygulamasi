@@ -4,7 +4,6 @@ using KutuphaneUygulamasi.Models;
 using KutuphaneUygulamasi.Models.ViewModels;
 using System.Threading.Tasks;
 
-
 namespace KutuphaneUygulamasi.Controllers
 {
     public class AccountController : Controller
@@ -37,22 +36,39 @@ namespace KutuphaneUygulamasi.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Email == "admin@admin.com" && model.Password == "Berkay123.")
+                // Kullanıcıyı e-posta ile bulmaya çalışıyoruz
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user == null)
                 {
-                    return RedirectToAction("Index", "Admin");
+                    // Eğer kullanıcı e-posta ile bulunamazsa, kullanıcı adı ile bulmaya çalışın
+                    user = await _userManager.FindByNameAsync(model.Email);
                 }
 
-
-
-
-                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: true);
-                if (result.Succeeded)
+                if (user != null)
                 {
-                    return RedirectToAction("Index", "User");
-                }
-                if (result.IsLockedOut)
-                {
-                    return View("Lockout");
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: true);
+                    if (result.Succeeded)
+                    {
+                        var roles = await _userManager.GetRolesAsync(user);
+                        if (roles.Contains("Admin"))
+                        {
+                            return RedirectToAction("Index", "Admin");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "User");
+                        }
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        return View("Lockout");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                        return View(model);
+                    }
                 }
                 else
                 {
@@ -85,9 +101,21 @@ namespace KutuphaneUygulamasi.Controllers
                     LastName = model.LastName,
                     Address = model.Address
                 };
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // Kullanıcıya "Student" rolünü ata
+                    var roleResult = await _userManager.AddToRoleAsync(user, "Student");
+                    if (!roleResult.Succeeded)
+                    {
+                        foreach (var error in roleResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return View(model); // Hata durumunda model ile birlikte sayfayı yeniden göster
+                    }
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -99,7 +127,7 @@ namespace KutuphaneUygulamasi.Controllers
             return View(model);
         }
 
-        // GET: /Account/Logout
+        // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
