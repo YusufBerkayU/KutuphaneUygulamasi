@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KutuphaneUygulamasi.Controllers
 {
@@ -13,40 +15,28 @@ namespace KutuphaneUygulamasi.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-
         public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult AddBook()
-        {
-            return RedirectToAction("AddBook", "Create");
-        }
-
-
-
-
-        public IActionResult ListBooks()
-        {
-            return RedirectToAction("ListBooks", "Create");
-        }
-
+        [HttpGet]
         public async Task<IActionResult> ListMembers()
         {
             var users = await _userManager.Users.ToListAsync();
-            return View(users);
+            return PartialView(users);
         }
 
         [HttpGet]
         public IActionResult AddMember()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -67,7 +57,7 @@ namespace KutuphaneUygulamasi.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("ListMembers");
+                    return Json(new { success = true });
                 }
 
                 foreach (var error in result.Errors)
@@ -76,25 +66,10 @@ namespace KutuphaneUygulamasi.Controllers
                 }
             }
 
-            return View(model);
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
 
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -116,7 +91,7 @@ namespace KutuphaneUygulamasi.Controllers
                 Address = user.Address
             };
 
-            return View(model);
+            return PartialView(model);
         }
 
         [HttpPost]
@@ -144,16 +119,18 @@ namespace KutuphaneUygulamasi.Controllers
                 var result = await _userManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("ListMembers");
+                    return Json(new { success = true });
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            return View(model);
+
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
 
+        [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -167,14 +144,10 @@ namespace KutuphaneUygulamasi.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            return PartialView(user);
         }
 
-
-
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
@@ -191,18 +164,15 @@ namespace KutuphaneUygulamasi.Controllers
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
-                return RedirectToAction("ListMembers");
+                return Json(new { success = true });
             }
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            return View(user);
+            return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
-
-
-
 
         [HttpGet]
         public async Task<IActionResult> SetMemberRole()
@@ -216,12 +186,10 @@ namespace KutuphaneUygulamasi.Controllers
                     Text = u.Email
                 }).ToList()
             };
-            return View(model);
+            return PartialView(model);
         }
 
-
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SetMemberRole(SetMemberRoleViewModel model)
         {
             if (ModelState.IsValid)
@@ -229,20 +197,18 @@ namespace KutuphaneUygulamasi.Controllers
                 var user = await _userManager.FindByIdAsync(model.UserId);
                 if (user != null)
                 {
-                    // Mevcut rolleri kaldır
                     var currentRoles = await _userManager.GetRolesAsync(user);
                     var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
                     if (!removeResult.Succeeded)
                     {
                         ModelState.AddModelError("", "Failed to remove user roles");
-                        return View(model);
+                        return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
                     }
 
-                    // Yeni rol ekle
                     var addResult = await _userManager.AddToRoleAsync(user, model.Role);
                     if (addResult.Succeeded)
                     {
-                        return RedirectToAction("ListMembers");
+                        return Json(new { success = true });
                     }
                     foreach (var error in addResult.Errors)
                     {
@@ -251,15 +217,13 @@ namespace KutuphaneUygulamasi.Controllers
                 }
             }
 
-            // ModelState geçerli değilse veya işlemler başarısız olursa, kullanıcı listesini tekrar yükleyin
             var users = await _userManager.Users.ToListAsync();
             model.Users = users.Select(u => new SelectListItem
             {
                 Value = u.Id,
                 Text = u.Email
             }).ToList();
-            return View(model);
+            return Json(new { success = false, data = model, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
     }
 }
-

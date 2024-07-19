@@ -1,0 +1,132 @@
+﻿html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f4f4f4; /* Genel arka plan rengi */
+    overflow-x: hidden; /* Yatay kaydırmayı gizle */
+}
+
+.wrapper {
+    display: flex;
+    align-items: stretch;
+}
+
+#sidebar {
+    position: fixed; /* Fixed konumlandırma */
+    top: 0;
+    left: 0;
+    min-width: 250px;
+    max-width: 250px;
+    background: #87CEEB; /* Gökyüzü mavisi */
+    color: #fff;
+    transition: all 0.3s ease; /* Geçiş efekti ekleyin */
+    height: 100vh; /* Yüksekliği %100 yap */
+    overflow-y: auto; /* İçeriğin taşmasını sağlar */
+}
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: #4682B4; /* Daha koyu gökyüzü mavisi */
+        font-size: 1.2em;
+    }
+
+    #sidebar ul.components {
+        padding: 20px 0;
+        list-style: none;
+    }
+
+        #sidebar ul.components li {
+            position: relative;
+            padding-bottom: 10px; /* Çizgi ile metin arasındaki boşluk */
+            border-bottom: 1px solid #1E90FF; /* Çizgi rengi */
+        }
+
+            #sidebar ul.components li:last-child {
+                border-bottom: none; /* Son öğenin altında çizgi olmaması */
+            }
+
+            #sidebar ul.components li a {
+                display: block;
+                padding: 10px;
+                font-size: 1.1em;
+                color: #fff;
+                text-decoration: none;
+                transition: background 0.3s ease; /* Hover efektini yumuşat */
+            }
+
+                #sidebar ul.components li a:hover {
+                    color: #87CEEB; /* Hover rengi */
+                    background: #fff;
+                }
+
+ul.CTAs {
+    padding: 20px;
+}
+
+    ul.CTAs a {
+        text-align: center;
+        font-size: 0.9em !important;
+        display: block;
+        border-radius: 5px;
+        margin-bottom: 5px;
+        transition: background 0.3s ease, color 0.3s ease; /* Yumuşak geçiş */
+    }
+
+a.download {
+    background: #fff;
+    color: #87CEEB; /* Gökyüzü mavisi */
+}
+
+a.article, a.article:hover {
+    background: #4682B4 !important; /* Daha koyu gökyüzü mavisi */
+    color: #fff !important;
+}
+
+#content {
+    margin-left: 250px; /* Sidebar genişliği kadar boşluk bırak */
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s ease; /* Geçiş efekti ekleyin */
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+#sidebarCollapse {
+    display: none; /* Butonu gizler */
+}
+
+/* Responsive tasarım eklemeyi unutmayın */
+@media (max-width: 768px) {
+    #sidebar {
+        min-width: 200px;
+        max-width: 200px;
+    }
+
+    #content {
+        margin-left: 200px; /* Sidebar genişliği kadar boşluk bırak */
+    }
+}

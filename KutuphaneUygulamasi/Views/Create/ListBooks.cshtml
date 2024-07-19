@@ -1,51 +1,32 @@
 ﻿@model IEnumerable<KutuphaneUygulamasi.Models.Book>
 
-@{
-    ViewData["Title"] = "Kitap Listesi";
-}
+<h2>Kitap Listesi</h2>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Kütüphane</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site1.css" />
-</head>
-<body>
-    <div class="container mt-4">
-        <h1>Kitap Listesi</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Başlık</th>
-                    <th>Yazar</th>
-                    <th>Açıklama</th>
-                    <th>PDF</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var book in Model)
-                {
-                    <tr>
-                        <td>@book.Title</td>
-                        <td>@book.Author</td>
-                        <td>@book.Description</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(book.PdfFilePath))
-                            {
-                                <a href="@Url.Content(book.PdfFilePath)" target="_blank">PDF Görüntüle</a>
-                            }
-                            else
-                            {
-                                <span>PDF Yok</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+<table>
+    <thead>
+        <tr>
+            <th>Kitap Adı</th>
+            <th>Yazar</th>
+            <th>PDF</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(book.PdfFilePath))
+                    {
+                        <a href="@book.PdfFilePath" target="_blank">PDF'i Görüntüle</a>
+                    }
+                    else
+                    {
+                        <span>PDF Yok</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,40 +1,45 @@
 ﻿@model KutuphaneUygulamasi.Models.Book
 
-@{
-    ViewData["Title"] = "Kitap Ekle";
-}
+<h2>Yeni Kitap Ekle</h2>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Kütüphane</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site1.css" />
-</head>
-<body>
-    <div class="container mt-4">
-        <h1>Kitap Ekle</h1>
-        <form asp-action="AddBook" asp-controller="Create" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="Title">Başlık</label>
-                <input type="text" class="form-control" id="Title" name="Title" required />
-            </div>
-            <div class="form-group">
-                <label for="Author">Yazar</label>
-                <input type="text" class="form-control" id="Author" name="Author" required />
-            </div>
-            <div class="form-group">
-                <label for="Description">Açıklama</label>
-                <textarea class="form-control" id="Description" name="Description" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="PdfFile">PDF Dosyası</label>
-                <input type="file" class="form-control-file" id="PdfFile" name="pdfFile" accept=".pdf"  />
-            </div>
-            <button type="submit" class="btn btn-primary">Kitap Ekle</button>
-        </form>
+<form id="add-book-form" enctype="multipart/form-data">
+    <div>
+        <label for="Title">Kitap Adı:</label>
+        <input type="text" id="Title" name="Title" required />
     </div>
-</body>
-</html>
+    <div>
+        <label for="Author">Yazar:</label>
+        <input type="text" id="Author" name="Author" required />
+    </div>
+    <!-- Diğer kitap özellikleri için input alanları -->
+    <div>
+        <label for="pdfFile">PDF Dosyası:</label>
+        <input type="file" id="pdfFile" name="pdfFile" accept=".pdf" />
+    </div>
+    <button type="submit">Kitap Ekle</button>
+</form>
+
+<script>
+    $('#add-book-form').submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            url: '/Create/AddBook',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                if (result.success) {
+                    alert('Kitap başarıyla eklendi!');
+                    loadPage('ListBooks', 'Create');
+                } else {
+                    alert('Bir hata oluştu: ' + result.errors.join(', '));
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Bir hata oluştu: ", error);
+            }
+        });
+    });
+</script>
