@@ -105,7 +105,7 @@ namespace KutuphaneUygulamasi.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Kullanıcıya "Student" rolünü ata
+                    
                     var roleResult = await _userManager.AddToRoleAsync(user, "Student");
                     if (!roleResult.Succeeded)
                     {
