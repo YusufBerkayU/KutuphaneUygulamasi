@@ -15,7 +15,7 @@ body {
 }
 
 #sidebar {
-    position: fixed; /* Fixed konumlandırma */
+    position: fixed; 
     top: 0; /* Üstten sıfır */
     left: 0; /* Soldan sıfır */
     min-width: 250px;
