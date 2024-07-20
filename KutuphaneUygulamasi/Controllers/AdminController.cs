@@ -147,7 +147,7 @@ namespace KutuphaneUygulamasi.Controllers
             return PartialView(user);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (id == null)
@@ -186,44 +186,33 @@ namespace KutuphaneUygulamasi.Controllers
                     Text = u.Email
                 }).ToList()
             };
+
             return PartialView(model);
         }
 
         [HttpPost]
         public async Task<IActionResult> SetMemberRole(SetMemberRoleViewModel model)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null)
             {
-                var user = await _userManager.FindByIdAsync(model.UserId);
-                if (user != null)
-                {
-                    var currentRoles = await _userManager.GetRolesAsync(user);
-                    var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-                    if (!removeResult.Succeeded)
-                    {
-                        ModelState.AddModelError("", "Failed to remove user roles");
-                        return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
-                    }
-
-                    var addResult = await _userManager.AddToRoleAsync(user, model.Role);
-                    if (addResult.Succeeded)
-                    {
-                        return Json(new { success = true });
-                    }
-                    foreach (var error in addResult.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
+                return Json(new { success = false, errors = new[] { "Kullanıcı bulunamadı." } });
             }
 
-            var users = await _userManager.Users.ToListAsync();
-            model.Users = users.Select(u => new SelectListItem
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var result = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            if (!result.Succeeded)
             {
-                Value = u.Id,
-                Text = u.Email
-            }).ToList();
-            return Json(new { success = false, data = model, errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+                return Json(new { success = false, errors = result.Errors.Select(e => e.Description) });
+            }
+
+            result = await _userManager.AddToRoleAsync(user, model.Role);
+            if (result.Succeeded)
+            {
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, errors = result.Errors.Select(e => e.Description) });
         }
     }
 }
