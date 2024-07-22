@@ -55,7 +55,7 @@ body {
             }
 
                 #sidebar ul.components li a:hover {
-                    color: #87CEEB; /* Hover rengi */
+                    color: #87CEEB; 
                     background: #fff;
                 }
 
