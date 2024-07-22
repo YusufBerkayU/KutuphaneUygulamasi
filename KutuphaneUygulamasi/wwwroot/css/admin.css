@@ -28,8 +28,7 @@ body {
 
     #sidebar .sidebar-header {
         padding: 20px;
-        background: #4682B4; /* Daha koyu gökyüzü mavisi */
-    }
+        background: #4682B4;
 
     #sidebar ul.components {
         padding: 20px 0;
