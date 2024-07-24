@@ -23,7 +23,7 @@ body {
     background: #87CEEB; /* Gökyüzü mavisi */
     color: #fff;
     transition: all 0.3s;
-    height: 100vh; /* Yüksekliği %100 yap */
+    height: 100vh; 
 }
 
     #sidebar .sidebar-header {
