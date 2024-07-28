@@ -37,7 +37,7 @@ body {
 
         #sidebar ul.components li {
             position: relative;
-            padding-bottom: 10px; /* Çizgi ile metin arasındaki boşluk */
+            padding-bottom: 10px; 
             border-bottom: 1px solid #1E90FF; /* Çizgi rengi */
         }
 
