@@ -6,6 +6,7 @@
     <title>Admin Panel</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/admin.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -15,19 +16,19 @@
             </div>
             <ul class="list-unstyled components">
                 <li>
-                    <a href="@Url.Action("AddBook", "Admin")">Kitap Ekle</a>
+                    <a href="#" id="addBook">Kitap Ekle</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("ListBooks", "Admin")">Kitap Listesi</a>
+                    <a href="#" id="listBooks">Kitap Listesi</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("ListMembers", "Admin")">Üye Listesi</a>
+                    <a href="#" id="listMembers">Üye Listesi</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("AddMember", "Admin")">Üye Ekle</a>
+                    <a href="#" id="addMember">Üye Ekle</a>
                 </li>
                 <li>
-                    <a href="@Url.Action("SetMemberRole", "Admin")">Üye Rolü Belirle</a>
+                    <a href="#" id="setMemberRole">Üye Rolü Belirle</a>
                 </li>
             </ul>
         </nav>
@@ -42,15 +43,44 @@
                 </div>
             </nav>
 
-            <h2>@ViewData["Title"]</h2>
+            <h2 id="pageTitle">Admin Panel</h2>
             <div class="line"></div>
 
-            
+            <div id="mainContent">
+                <!-- AJAX content will be loaded here -->
+            </div>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#addBook").click(function () {
+                loadContent('@Url.Action("AddBookContent", "Admin")');
+            });
+            $("#listBooks").click(function () {
+                loadContent('@Url.Action("ListBooksContent", "Admin")');
+            });
+            $("#listMembers").click(function () {
+                loadContent('@Url.Action("ListMembersContent", "Admin")');
+            });
+            $("#addMember").click(function () {
+                loadContent('@Url.Action("AddMemberContent", "Admin")');
+            });
+            $("#setMemberRole").click(function () {
+                loadContent('@Url.Action("SetMemberRoleContent", "Admin")');
+            });
+
+            function loadContent(url) {
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#mainContent').html(data);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

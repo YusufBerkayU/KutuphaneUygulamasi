@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace KutuphaneUygulamasi.Controllers
 {
@@ -13,40 +15,97 @@ namespace KutuphaneUygulamasi.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-
         public AdminController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult AddBook()
+        public IActionResult AddBookContent()
         {
-            return RedirectToAction("AddBook", "Create");
+            // AddBook formunu döndür
+            return Content(@"
+                <h3>Kitap Ekle</h3>
+                <form action='/Create/AddBook' method='post' enctype='multipart/form-data'>
+                    <div class='form-group'>
+                        <label for='Title'>Başlık</label>
+                        <input type='text' class='form-control' id='Title' name='Title' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Author'>Yazar</label>
+                        <input type='text' class='form-control' id='Author' name='Author' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Description'>Açıklama</label>
+                        <textarea class='form-control' id='Description' name='Description' required></textarea>
+                    </div>
+                    <div class='form-group'>
+                        <label for='PdfFile'>PDF Dosyası</label>
+                        <input type='file' class='form-control' id='PdfFile' name='PdfFile' required>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Ekle</button>
+                </form>");
         }
 
-
-
-
-        public IActionResult ListBooks()
+        public async Task<IActionResult> ListBooksContent()
         {
-            return RedirectToAction("ListBooks", "Create");
+            // Kitap listesini döndür
+            var books = await _context.Books.ToListAsync();
+            var booksHtml = "<h3>Kitap Listesi</h3><ul class='list-group'>";
+            foreach (var book in books)
+            {
+                booksHtml += $"<li class='list-group-item'>{book.Title} - {book.Author}</li>";
+            }
+            booksHtml += "</ul>";
+            return Content(booksHtml);
         }
 
-        public async Task<IActionResult> ListMembers()
+        public async Task<IActionResult> ListMembersContent()
         {
             var users = await _userManager.Users.ToListAsync();
-            return View(users);
+            var usersHtml = "<h3>Üye Listesi</h3><ul class='list-group'>";
+            foreach (var user in users)
+            {
+                usersHtml += $"<li class='list-group-item'>{user.Email}</li>";
+            }
+            usersHtml += "</ul>";
+            return Content(usersHtml);
         }
 
         [HttpGet]
-        public IActionResult AddMember()
+        public IActionResult AddMemberContent()
         {
-            return View();
+            // AddMember formunu döndür
+            return Content(@"
+                <h3>Üye Ekle</h3>
+                <form action='/Admin/AddMember' method='post'>
+                    <div class='form-group'>
+                        <label for='Email'>E-posta</label>
+                        <input type='email' class='form-control' id='Email' name='Email' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='FirstName'>Ad</label>
+                        <input type='text' class='form-control' id='FirstName' name='FirstName' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='LastName'>Soyad</label>
+                        <input type='text' class='form-control' id='LastName' name='LastName' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Address'>Adres</label>
+                        <input type='text' class='form-control' id='Address' name='Address' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Password'>Şifre</label>
+                        <input type='password' class='form-control' id='Password' name='Password' required>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Ekle</button>
+                </form>");
         }
 
         [HttpPost]
@@ -67,7 +126,7 @@ namespace KutuphaneUygulamasi.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("ListMembers");
+                    return RedirectToAction("Index");
                 }
 
                 foreach (var error in result.Errors)
@@ -76,136 +135,35 @@ namespace KutuphaneUygulamasi.Controllers
                 }
             }
 
-            return View(model);
+            return Content(@"
+                <h3>Üye Ekle</h3>
+                <form action='/Admin/AddMember' method='post'>
+                    <div class='form-group'>
+                        <label for='Email'>E-posta</label>
+                        <input type='email' class='form-control' id='Email' name='Email' value='" + model.Email + @"' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='FirstName'>Ad</label>
+                        <input type='text' class='form-control' id='FirstName' name='FirstName' value='" + model.FirstName + @"' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='LastName'>Soyad</label>
+                        <input type='text' class='form-control' id='LastName' name='LastName' value='" + model.LastName + @"' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Address'>Adres</label>
+                        <input type='text' class='form-control' id='Address' name='Address' value='" + model.Address + @"' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Password'>Şifre</label>
+                        <input type='password' class='form-control' id='Password' name='Password' required>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Ekle</button>
+                </form>");
         }
-
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var model = new RegisterViewModel
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Address = user.Address
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(string id, RegisterViewModel model)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                user.Email = model.Email;
-                user.UserName = model.Email;
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.Address = model.Address;
-
-                var result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListMembers");
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-            }
-            return View(model);
-        }
-
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
-
-
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("ListMembers");
-            }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return View(user);
-        }
-
-
-
 
         [HttpGet]
-        public async Task<IActionResult> SetMemberRole()
+        public async Task<IActionResult> SetMemberRoleContent()
         {
             var users = await _userManager.Users.ToListAsync();
             var model = new SetMemberRoleViewModel
@@ -216,9 +174,29 @@ namespace KutuphaneUygulamasi.Controllers
                     Text = u.Email
                 }).ToList()
             };
-            return View(model);
-        }
 
+            var usersHtml = "<h3>Üye Rolü Belirle</h3>";
+            usersHtml += @"
+                <form action='/Admin/SetMemberRole' method='post'>
+                    <div class='form-group'>
+                        <label for='UserId'>Üye</label>
+                        <select class='form-control' id='UserId' name='UserId'>";
+            foreach (var user in model.Users)
+            {
+                usersHtml += $"<option value='{user.Value}'>{user.Text}</option>";
+            }
+            usersHtml += @"
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Role'>Rol</label>
+                        <input type='text' class='form-control' id='Role' name='Role' required>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Belirle</button>
+                </form>";
+
+            return Content(usersHtml);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -235,14 +213,14 @@ namespace KutuphaneUygulamasi.Controllers
                     if (!removeResult.Succeeded)
                     {
                         ModelState.AddModelError("", "Failed to remove user roles");
-                        return View(model);
+                        return RedirectToAction("Index");
                     }
 
                     // Yeni rol ekle
                     var addResult = await _userManager.AddToRoleAsync(user, model.Role);
                     if (addResult.Succeeded)
                     {
-                        return RedirectToAction("ListMembers");
+                        return RedirectToAction("Index");
                     }
                     foreach (var error in addResult.Errors)
                     {
@@ -251,15 +229,27 @@ namespace KutuphaneUygulamasi.Controllers
                 }
             }
 
-            // ModelState geçerli değilse veya işlemler başarısız olursa, kullanıcı listesini tekrar yükleyin
             var users = await _userManager.Users.ToListAsync();
             model.Users = users.Select(u => new SelectListItem
             {
                 Value = u.Id,
                 Text = u.Email
             }).ToList();
-            return View(model);
+
+            return Content(@"
+                <h3>Üye Rolü Belirle</h3>
+                <form action='/Admin/SetMemberRole' method='post'>
+                    <div class='form-group'>
+                        <label for='UserId'>Üye</label>
+                        <select class='form-control' id='UserId' name='UserId'>" + string.Join("", model.Users.Select(u => $"<option value='{u.Value}'>{u.Text}</option>")) + @"
+                        </select>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Role'>Rol</label>
+                        <input type='text' class='form-control' id='Role' name='Role' required>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Belirle</button>
+                </form>");
         }
     }
 }
-
