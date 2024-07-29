@@ -1,4 +1,5 @@
-﻿html, body {
+﻿/* Temel sıfırlama */
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -9,27 +10,30 @@ body {
     background: #f4f4f4;
 }
 
+/* Wrapper için stil */
 .wrapper {
     display: flex;
-    align-items: stretch;
-    height: 100vh; /* Yüksekliği tam ekran yap */
+    height: 100vh;
+    overflow: hidden;
 }
 
+/* Sidebar stilleri */
 #sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px; /* Sabit genişlik */
+    width: 250px; /* Sidebar genişliği */
     background: #87CEEB;
     color: #fff;
     transition: all 0.3s;
     height: 100vh;
-    z-index: 1000; /* Sidebar'ın her zaman üstte olmasını sağla */
+    position: fixed;
+    z-index: 1; /* Sidebar arka planda kalır */
+    overflow-y: auto;
 }
 
     #sidebar .sidebar-header {
         padding: 20px;
         background: #4682B4;
+        text-align: center;
+        font-size: 14px;
     }
 
     #sidebar ul.components {
@@ -38,21 +42,15 @@ body {
     }
 
         #sidebar ul.components li {
-            position: relative;
-            padding-bottom: 10px;
+            padding: 10px;
+            padding-left: 20px;
             border-bottom: 1px solid #1E90FF;
         }
 
-            #sidebar ul.components li:last-child {
-                border-bottom: none;
-            }
-
             #sidebar ul.components li a {
-                display: block;
-                padding: 10px;
-                font-size: 1.1em;
                 color: #fff;
                 text-decoration: none;
+                display: block;
             }
 
                 #sidebar ul.components li a:hover {
@@ -60,61 +58,42 @@ body {
                     background: #fff;
                 }
 
-ul.CTAs {
-    padding: 20px;
-}
-
-    ul.CTAs a {
-        text-align: center;
-        font-size: 0.9em !important;
-        display: block;
-        border-radius: 5px;
-        margin-bottom: 5px;
-    }
-
-a.download {
-    background: #fff;
-    color: #87CEEB;
-}
-
-a.article, a.article:hover {
-    background: #4682B4 !important;
-    color: #fff !important;
-}
-
+/* İçerik stilleri */
 #content {
     margin-left: 250px; /* Sidebar genişliği kadar boşluk bırak */
     padding: 20px;
-    width: calc(100% - 250px); /* Sidebar genişliği kadar boşluk bırak */
-    min-height: 100vh; /* İçeriğin tam yüksekliğe sahip olmasını sağla */
     transition: all 0.3s;
-    z-index: 1; /* İçeriğin her zaman görünür olması için */
-    background: #fff;
-    position: relative; /* Konumlandırma bağlamı oluştur */
-}
-
-.navbar {
-    padding: 15px 10px;
-    background: #fff;
-    border: none;
-    border-radius: 0;
-    margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-btn {
-    box-shadow: none;
-    outline: none !important;
-    border: none;
+    width: calc(100% - 250px); /* Sidebar genişliği kadar alandan çıkar */
+    overflow-y: auto;
+    position: relative;
+    z-index: 2; /* İçerik üstte görünür */
 }
 
 .line {
     width: 100%;
     height: 1px;
     border-bottom: 1px dashed #ddd;
-    margin: 40px 0;
+    margin: 20px 0;
 }
 
-#sidebarCollapse {
-    display: none; /* Butonu gizler */
+#pageTitle {
+    margin-top: 20px;
+}
+
+/* Responsive medya sorguları */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+        #sidebar .sidebar-header {
+            text-align: center;
+        }
+
+    #content {
+        margin-left: 0;
+        width: 100%;
+    }
 }
