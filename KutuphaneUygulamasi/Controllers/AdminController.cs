@@ -104,6 +104,10 @@ namespace KutuphaneUygulamasi.Controllers
                         <label for='Password'>Şifre</label>
                         <input type='password' class='form-control' id='Password' name='Password' required>
                     </div>
+                     <div class=""form-group"">
+                <label for=""ConfirmPassword"">Şifreyi Onayla:</label>
+                <input type=""password"" id=""ConfirmPassword"" name=""ConfirmPassword"" class=""form-control"" required />
+            </div>
                     <button type='submit' class='btn btn-primary'>Ekle</button>
                 </form>");
         }
@@ -136,30 +140,34 @@ namespace KutuphaneUygulamasi.Controllers
             }
 
             return Content(@"
-                <h3>Üye Ekle</h3>
-                <form action='/Admin/AddMember' method='post'>
-                    <div class='form-group'>
-                        <label for='Email'>E-posta</label>
-                        <input type='email' class='form-control' id='Email' name='Email' value='" + model.Email + @"' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='FirstName'>Ad</label>
-                        <input type='text' class='form-control' id='FirstName' name='FirstName' value='" + model.FirstName + @"' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='LastName'>Soyad</label>
-                        <input type='text' class='form-control' id='LastName' name='LastName' value='" + model.LastName + @"' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Address'>Adres</label>
-                        <input type='text' class='form-control' id='Address' name='Address' value='" + model.Address + @"' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Password'>Şifre</label>
-                        <input type='password' class='form-control' id='Password' name='Password' required>
-                    </div>
-                    <button type='submit' class='btn btn-primary'>Ekle</button>
-                </form>");
+               <h3>Üye Ekle</h3>
+        <form asp-action=""AddMember"" method=""post"">
+            <div class=""form-group"">
+                <label for=""Email"">E-posta:</label>
+                <input type=""email"" id=""Email"" name=""Email"" class=""form-control"" required />
+            </div>
+            <div class=""form-group"">
+                <label for=""Password"">Şifre:</label>
+                <input type=""password"" id=""Password"" name=""Password"" class=""form-control"" required />
+            </div>
+            <div class=""form-group"">
+                <label for=""ConfirmPassword"">Şifreyi Onayla:</label>
+                <input type=""password"" id=""ConfirmPassword"" name=""ConfirmPassword"" class=""form-control"" required />
+            </div>
+            <div class=""form-group"">
+                <label for=""FirstName"">Ad:</label>
+                <input type=""text"" id=""FirstName"" name=""FirstName"" class=""form-control"" />
+            </div>
+            <div class=""form-group"">
+                <label for=""LastName"">Soyad:</label>
+                <input type=""text"" id=""LastName"" name=""LastName"" class=""form-control"" />
+            </div>
+            <div class=""form-group"">
+                <label for=""Address"">Adres:</label>
+                <input type=""text"" id=""Address"" name=""Address"" class=""form-control"" />
+            </div>
+            <button type=""submit"" class=""btn btn-primary"">Ekle</button>
+        </form>");
         }
 
         [HttpGet]
