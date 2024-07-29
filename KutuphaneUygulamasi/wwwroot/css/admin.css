@@ -12,18 +12,19 @@ body {
 .wrapper {
     display: flex;
     align-items: stretch;
+    height: 100vh; /* Yüksekliği tam ekran yap */
 }
 
 #sidebar {
     position: fixed;
-    top: 0; /* Üstten sıfır */
-    left: 0; /* Soldan sıfır */
-    min-width: 250px;
-    max-width: 250px;
-    background: #87CEEB; /* Gökyüzü mavisi */
+    top: 0;
+    left: 0;
+    width: 250px; /* Sabit genişlik */
+    background: #87CEEB;
     color: #fff;
     transition: all 0.3s;
     height: 100vh;
+    z-index: 1000; /* Sidebar'ın her zaman üstte olmasını sağla */
 }
 
     #sidebar .sidebar-header {
@@ -39,11 +40,11 @@ body {
         #sidebar ul.components li {
             position: relative;
             padding-bottom: 10px;
-            border-bottom: 1px solid #1E90FF; /* Çizgi rengi */
+            border-bottom: 1px solid #1E90FF;
         }
 
             #sidebar ul.components li:last-child {
-                border-bottom: none; /* Son öğenin altında çizgi olmaması */
+                border-bottom: none;
             }
 
             #sidebar ul.components li a {
@@ -73,20 +74,23 @@ ul.CTAs {
 
 a.download {
     background: #fff;
-    color: #87CEEB; /* Gökyüzü mavisi */
+    color: #87CEEB;
 }
 
 a.article, a.article:hover {
-    background: #4682B4 !important; /* Daha koyu gökyüzü mavisi */
+    background: #4682B4 !important;
     color: #fff !important;
 }
 
 #content {
     margin-left: 250px; /* Sidebar genişliği kadar boşluk bırak */
     padding: 20px;
-    min-height: 100vh;
+    width: calc(100% - 250px); /* Sidebar genişliği kadar boşluk bırak */
+    min-height: 100vh; /* İçeriğin tam yüksekliğe sahip olmasını sağla */
     transition: all 0.3s;
-    z-index: 1; /* İçeriğin, sidebar'dan üstte olmasını sağlamak için z-index */
+    z-index: 1; /* İçeriğin her zaman görünür olması için */
+    background: #fff;
+    position: relative; /* Konumlandırma bağlamı oluştur */
 }
 
 .navbar {
