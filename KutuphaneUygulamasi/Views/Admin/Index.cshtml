@@ -1,12 +1,17 @@
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/admin.css" />
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -42,7 +47,6 @@
         </div>
     </div>
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#addBook").click(function () {
@@ -67,43 +71,32 @@
                     type: 'GET',
                     success: function (data) {
                         $('#mainContent').html(data);
-
-                        // Edit ve Details butonlarý için olay baðlayýcýlarý yeniden tanýmlayýn
-                        $('.edit-btn').click(function () {
-                            var id = $(this).data('id');
-                            editMember(id);
-                        });
-
-                        $('.details-btn').click(function () {
-                            var id = $(this).data('id');
-                            showDetails(id);
-                        });
-                    }
-                });
-            }
-
-            function showDetails(id) {
-                $.ajax({
-                    url: '@Url.Action("Details", "Admin")',
-                    type: 'GET',
-                    data: { id: id },
-                    success: function (data) {
-                        $('#mainContent').html(data);
-                    }
-                });
-            }
-
-            function editMember(id) {
-                $.ajax({
-                    url: '@Url.Action("Edit", "Admin")',
-                    type: 'GET',
-                    data: { id: id },
-                    success: function (data) {
-                        $('#mainContent').html(data);
                     }
                 });
             }
         });
+
+        function showDetails(id) {
+            $.ajax({
+                url: '@Url.Action("Details", "Admin")',
+                type: 'GET',
+                data: { id: id },
+                success: function (data) {
+                    $('#mainContent').html(data);
+                }
+            });
+        }
+
+        function editMember(id) {
+            $.ajax({
+                url: '@Url.Action("Edit", "Admin")',
+                type: 'GET',
+                data: { id: id },
+                success: function (data) {
+                    $('#mainContent').html(data);
+                }
+            });
+        }
     </script>
 </body>
 </html>

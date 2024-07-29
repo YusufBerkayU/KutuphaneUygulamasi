@@ -28,10 +28,9 @@ namespace KutuphaneUygulamasi.Controllers
 
         public IActionResult AddBookContent()
         {
-            // AddBook formunu döndür
             return Content(@"
                 <h3>Kitap Ekle</h3>
-                <form action='/Create/AddBook' method='post' enctype='multipart/form-data'>
+                <form action='/Admin/AddBook' method='post' enctype='multipart/form-data'>
                     <div class='form-group'>
                         <label for='Title'>Başlık</label>
                         <input type='text' class='form-control' id='Title' name='Title' required>
@@ -54,7 +53,6 @@ namespace KutuphaneUygulamasi.Controllers
 
         public async Task<IActionResult> ListBooksContent()
         {
-            // Kitap listesini döndür
             var books = await _context.Books.ToListAsync();
             var booksHtml = "<h3>Kitap Listesi</h3><ul class='list-group'>";
             foreach (var book in books)
@@ -71,9 +69,7 @@ namespace KutuphaneUygulamasi.Controllers
             var usersHtml = "<h3>Üye Listesi</h3><ul class='list-group'>";
             foreach (var user in users)
             {
-                usersHtml += $"<li class='list-group-item'>{user.Email} " +
-                    $"<button class='btn btn-info' onclick='viewDetails(\"{user.Id}\")'>Details</button> " +
-                    $"<button class='btn btn-warning' onclick='editMember(\"{user.Id}\")'>Edit</button></li>";
+                usersHtml += $"<li class='list-group-item'>{user.Email} <button class='btn btn-info' onclick='showDetails(\"{user.Id}\")'>Detaylar</button> <button class='btn btn-warning' onclick='editMember(\"{user.Id}\")'>Düzenle</button></li>";
             }
             usersHtml += "</ul>";
             return Content(usersHtml);
@@ -82,7 +78,6 @@ namespace KutuphaneUygulamasi.Controllers
         [HttpGet]
         public IActionResult AddMemberContent()
         {
-            // AddMember formunu döndür
             return Content(@"
                 <h3>Üye Ekle</h3>
                 <form action='/Admin/AddMember' method='post'>
@@ -106,10 +101,10 @@ namespace KutuphaneUygulamasi.Controllers
                         <label for='Password'>Şifre</label>
                         <input type='password' class='form-control' id='Password' name='Password' required>
                     </div>
-                     <div class=""form-group"">
-                <label for=""ConfirmPassword"">Şifreyi Onayla:</label>
-                <input type=""password"" id=""ConfirmPassword"" name=""ConfirmPassword"" class=""form-control"" required />
-            </div>
+                    <div class='form-group'>
+                        <label for='ConfirmPassword'>Şifreyi Onayla</label>
+                        <input type='password' class='form-control' id='ConfirmPassword' name='ConfirmPassword' required>
+                    </div>
                     <button type='submit' class='btn btn-primary'>Ekle</button>
                 </form>");
         }
@@ -142,34 +137,34 @@ namespace KutuphaneUygulamasi.Controllers
             }
 
             return Content(@"
-               <h3>Üye Ekle</h3>
-        <form asp-action=""AddMember"" method=""post"">
-            <div class=""form-group"">
-                <label for=""Email"">E-posta:</label>
-                <input type=""email"" id=""Email"" name=""Email"" class=""form-control"" required />
-            </div>
-            <div class=""form-group"">
-                <label for=""Password"">Şifre:</label>
-                <input type=""password"" id=""Password"" name=""Password"" class=""form-control"" required />
-            </div>
-            <div class=""form-group"">
-                <label for=""ConfirmPassword"">Şifreyi Onayla:</label>
-                <input type=""password"" id=""ConfirmPassword"" name=""ConfirmPassword"" class=""form-control"" required />
-            </div>
-            <div class=""form-group"">
-                <label for=""FirstName"">Ad:</label>
-                <input type=""text"" id=""FirstName"" name=""FirstName"" class=""form-control"" />
-            </div>
-            <div class=""form-group"">
-                <label for=""LastName"">Soyad:</label>
-                <input type=""text"" id=""LastName"" name=""LastName"" class=""form-control"" />
-            </div>
-            <div class=""form-group"">
-                <label for=""Address"">Adres:</label>
-                <input type=""text"" id=""Address"" name=""Address"" class=""form-control"" />
-            </div>
-            <button type=""submit"" class=""btn btn-primary"">Ekle</button>
-        </form>");
+                <h3>Üye Ekle</h3>
+                <form action='/Admin/AddMember' method='post'>
+                    <div class='form-group'>
+                        <label for='Email'>E-posta</label>
+                        <input type='email' class='form-control' id='Email' name='Email' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='FirstName'>Ad</label>
+                        <input type='text' class='form-control' id='FirstName' name='FirstName' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='LastName'>Soyad</label>
+                        <input type='text' class='form-control' id='LastName' name='LastName' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Address'>Adres</label>
+                        <input type='text' class='form-control' id='Address' name='Address' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Password'>Şifre</label>
+                        <input type='password' class='form-control' id='Password' name='Password' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='ConfirmPassword'>Şifreyi Onayla</label>
+                        <input type='password' class='form-control' id='ConfirmPassword' name='ConfirmPassword' required>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Ekle</button>
+                </form>");
         }
 
         [HttpGet]
@@ -200,7 +195,11 @@ namespace KutuphaneUygulamasi.Controllers
                     </div>
                     <div class='form-group'>
                         <label for='Role'>Rol</label>
-                        <input type='text' class='form-control' id='Role' name='Role' required>
+                        <select class='form-control' id='Role' name='Role'>
+                            <option value='admin'>Admin</option>
+                            <option value='student'>Student</option>
+                            <option value='staff'>Staff</option>
+                        </select>
                     </div>
                     <button type='submit' class='btn btn-primary'>Belirle</button>
                 </form>";
@@ -217,7 +216,6 @@ namespace KutuphaneUygulamasi.Controllers
                 var user = await _userManager.FindByIdAsync(model.UserId);
                 if (user != null)
                 {
-                    // Mevcut rolleri kaldır
                     var currentRoles = await _userManager.GetRolesAsync(user);
                     var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
                     if (!removeResult.Succeeded)
@@ -226,94 +224,22 @@ namespace KutuphaneUygulamasi.Controllers
                         return RedirectToAction("Index");
                     }
 
-                    // Yeni rol ekle
-                    var addRoleResult = await _userManager.AddToRoleAsync(user, model.Role);
-                    if (!addRoleResult.Succeeded)
+                    var addResult = await _userManager.AddToRoleAsync(user, model.Role);
+                    if (addResult.Succeeded)
                     {
-                        ModelState.AddModelError("", "Failed to add role to user");
                         return RedirectToAction("Index");
                     }
 
-                    return RedirectToAction("Index");
+                    foreach (var error in addResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
                 }
 
                 ModelState.AddModelError("", "User not found");
             }
 
             return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> EditMember(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var editHtml = $@"
-                <h3>Üye Düzenle</h3>
-                <form id='editMemberForm'>
-                    <input type='hidden' id='Id' name='Id' value='{user.Id}'>
-                    <div class='form-group'>
-                        <label for='Email'>E-posta</label>
-                        <input type='email' class='form-control' id='Email' name='Email' value='{user.Email}' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='FirstName'>Ad</label>
-                        <input type='text' class='form-control' id='FirstName' name='FirstName' value='{user.FirstName}' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='LastName'>Soyad</label>
-                        <input type='text' class='form-control' id='LastName' name='LastName' value='{user.LastName}' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Address'>Adres</label>
-                        <input type='text' class='form-control' id='Address' name='Address' value='{user.Address}' required>
-                    </div>
-                    <button type='submit' class='btn btn-primary'>Güncelle</button>
-                </form>";
-            return Content(editHtml);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateMember(ApplicationUser user)
-        {
-            var existingUser = await _userManager.FindByIdAsync(user.Id);
-            if (existingUser == null)
-            {
-                return NotFound();
-            }
-
-            existingUser.Email = user.Email;
-            existingUser.FirstName = user.FirstName;
-            existingUser.LastName = user.LastName;
-            existingUser.Address = user.Address;
-
-            var result = await _userManager.UpdateAsync(existingUser);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index");
-            }
-
-            return Content("Üye güncelleme başarısız oldu.");
-        }
-
-        public async Task<IActionResult> DetailsMember(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var detailsHtml = $@"
-                <h3>Üye Detayları</h3>
-                <p><strong>E-posta:</strong> {user.Email}</p>
-                <p><strong>Ad:</strong> {user.FirstName}</p>
-                <p><strong>Soyad:</strong> {user.LastName}</p>
-                <p><strong>Adres:</strong> {user.Address}</p>";
-            return Content(detailsHtml);
         }
     }
 }
