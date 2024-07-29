@@ -71,7 +71,9 @@ namespace KutuphaneUygulamasi.Controllers
             var usersHtml = "<h3>Üye Listesi</h3><ul class='list-group'>";
             foreach (var user in users)
             {
-                usersHtml += $"<li class='list-group-item'>{user.Email}</li>";
+                usersHtml += $"<li class='list-group-item'>{user.Email} " +
+                    $"<button class='btn btn-info' onclick='viewDetails(\"{user.Id}\")'>Details</button> " +
+                    $"<button class='btn btn-warning' onclick='editMember(\"{user.Id}\")'>Edit</button></li>";
             }
             usersHtml += "</ul>";
             return Content(usersHtml);
@@ -225,39 +227,93 @@ namespace KutuphaneUygulamasi.Controllers
                     }
 
                     // Yeni rol ekle
-                    var addResult = await _userManager.AddToRoleAsync(user, model.Role);
-                    if (addResult.Succeeded)
+                    var addRoleResult = await _userManager.AddToRoleAsync(user, model.Role);
+                    if (!addRoleResult.Succeeded)
                     {
+                        ModelState.AddModelError("", "Failed to add role to user");
                         return RedirectToAction("Index");
                     }
-                    foreach (var error in addResult.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+
+                    return RedirectToAction("Index");
                 }
+
+                ModelState.AddModelError("", "User not found");
             }
 
-            var users = await _userManager.Users.ToListAsync();
-            model.Users = users.Select(u => new SelectListItem
-            {
-                Value = u.Id,
-                Text = u.Email
-            }).ToList();
+            return RedirectToAction("Index");
+        }
 
-            return Content(@"
-                <h3>Üye Rolü Belirle</h3>
-                <form action='/Admin/SetMemberRole' method='post'>
+        public async Task<IActionResult> EditMember(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var editHtml = $@"
+                <h3>Üye Düzenle</h3>
+                <form id='editMemberForm'>
+                    <input type='hidden' id='Id' name='Id' value='{user.Id}'>
                     <div class='form-group'>
-                        <label for='UserId'>Üye</label>
-                        <select class='form-control' id='UserId' name='UserId'>" + string.Join("", model.Users.Select(u => $"<option value='{u.Value}'>{u.Text}</option>")) + @"
-                        </select>
+                        <label for='Email'>E-posta</label>
+                        <input type='email' class='form-control' id='Email' name='Email' value='{user.Email}' required>
                     </div>
                     <div class='form-group'>
-                        <label for='Role'>Rol</label>
-                        <input type='text' class='form-control' id='Role' name='Role' required>
+                        <label for='FirstName'>Ad</label>
+                        <input type='text' class='form-control' id='FirstName' name='FirstName' value='{user.FirstName}' required>
                     </div>
-                    <button type='submit' class='btn btn-primary'>Belirle</button>
-                </form>");
+                    <div class='form-group'>
+                        <label for='LastName'>Soyad</label>
+                        <input type='text' class='form-control' id='LastName' name='LastName' value='{user.LastName}' required>
+                    </div>
+                    <div class='form-group'>
+                        <label for='Address'>Adres</label>
+                        <input type='text' class='form-control' id='Address' name='Address' value='{user.Address}' required>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Güncelle</button>
+                </form>";
+            return Content(editHtml);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateMember(ApplicationUser user)
+        {
+            var existingUser = await _userManager.FindByIdAsync(user.Id);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+            existingUser.Email = user.Email;
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+            existingUser.Address = user.Address;
+
+            var result = await _userManager.UpdateAsync(existingUser);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return Content("Üye güncelleme başarısız oldu.");
+        }
+
+        public async Task<IActionResult> DetailsMember(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var detailsHtml = $@"
+                <h3>Üye Detayları</h3>
+                <p><strong>E-posta:</strong> {user.Email}</p>
+                <p><strong>Ad:</strong> {user.FirstName}</p>
+                <p><strong>Soyad:</strong> {user.LastName}</p>
+                <p><strong>Adres:</strong> {user.Address}</p>";
+            return Content(detailsHtml);
         }
     }
 }

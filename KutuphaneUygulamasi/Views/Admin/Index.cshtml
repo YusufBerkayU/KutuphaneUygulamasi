@@ -67,6 +67,39 @@
                     type: 'GET',
                     success: function (data) {
                         $('#mainContent').html(data);
+
+                        // Edit ve Details butonlarý için olay baðlayýcýlarý yeniden tanýmlayýn
+                        $('.edit-btn').click(function () {
+                            var id = $(this).data('id');
+                            editMember(id);
+                        });
+
+                        $('.details-btn').click(function () {
+                            var id = $(this).data('id');
+                            showDetails(id);
+                        });
+                    }
+                });
+            }
+
+            function showDetails(id) {
+                $.ajax({
+                    url: '@Url.Action("Details", "Admin")',
+                    type: 'GET',
+                    data: { id: id },
+                    success: function (data) {
+                        $('#mainContent').html(data);
+                    }
+                });
+            }
+
+            function editMember(id) {
+                $.ajax({
+                    url: '@Url.Action("Edit", "Admin")',
+                    type: 'GET',
+                    data: { id: id },
+                    success: function (data) {
+                        $('#mainContent').html(data);
                     }
                 });
             }
