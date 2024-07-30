@@ -8,9 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace KutuphaneUygulamasi.Controllers
 {
     public class AdminController : Controller
+
+       
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -21,95 +25,19 @@ namespace KutuphaneUygulamasi.Controllers
             _userManager = userManager;
         }
 
+
+
+
+    
+        // GET: Admin
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult AddBookContent()
-        {
-            return Content(@"
-                <h3>Kitap Ekle</h3>
-                <form action='/Admin/AddBook' method='post' enctype='multipart/form-data'>
-                    <div class='form-group'>
-                        <label for='Title'>Başlık</label>
-                        <input type='text' class='form-control' id='Title' name='Title' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Author'>Yazar</label>
-                        <input type='text' class='form-control' id='Author' name='Author' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Description'>Açıklama</label>
-                        <textarea class='form-control' id='Description' name='Description' required></textarea>
-                    </div>
-                    <div class='form-group'>
-                        <label for='PdfFile'>PDF Dosyası</label>
-                        <input type='file' class='form-control' id='PdfFile' name='PdfFile' required>
-                    </div>
-                    <button type='submit' class='btn btn-primary'>Ekle</button>
-                </form>");
-        }
-
-        public async Task<IActionResult> ListBooksContent()
-        {
-            var books = await _context.Books.ToListAsync();
-            var booksHtml = "<h3>Kitap Listesi</h3><ul class='list-group'>";
-            foreach (var book in books)
-            {
-                booksHtml += $"<li class='list-group-item'>{book.Title} - {book.Author}</li>";
-            }
-            booksHtml += "</ul>";
-            return Content(booksHtml);
-        }
-
-        public async Task<IActionResult> ListMembersContent()
-        {
-            var users = await _userManager.Users.ToListAsync();
-            var usersHtml = "<h3>Üye Listesi</h3><ul class='list-group'>";
-            foreach (var user in users)
-            {
-                usersHtml += $"<li class='list-group-item'>{user.Email} <button class='btn btn-info' onclick='showDetails(\"{user.Id}\")'>Detaylar</button> <button class='btn btn-warning' onclick='editMember(\"{user.Id}\")'>Düzenle</button></li>";
-            }
-            usersHtml += "</ul>";
-            return Content(usersHtml);
-        }
-
-        [HttpGet]
-        public IActionResult AddMemberContent()
-        {
-            return Content(@"
-                <h3>Üye Ekle</h3>
-                <form action='/Admin/AddMember' method='post'>
-                    <div class='form-group'>
-                        <label for='Email'>E-posta</label>
-                        <input type='email' class='form-control' id='Email' name='Email' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='FirstName'>Ad</label>
-                        <input type='text' class='form-control' id='FirstName' name='FirstName' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='LastName'>Soyad</label>
-                        <input type='text' class='form-control' id='LastName' name='LastName' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Address'>Adres</label>
-                        <input type='text' class='form-control' id='Address' name='Address' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Password'>Şifre</label>
-                        <input type='password' class='form-control' id='Password' name='Password' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='ConfirmPassword'>Şifreyi Onayla</label>
-                        <input type='password' class='form-control' id='ConfirmPassword' name='ConfirmPassword' required>
-                    </div>
-                    <button type='submit' class='btn btn-primary'>Ekle</button>
-                </form>");
-        }
-
+        // POST: Admin/AddMember
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMember(RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -124,124 +52,30 @@ namespace KutuphaneUygulamasi.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
-
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index");
+                    // Üye başarılı bir şekilde oluşturuldu
+                    return Ok(new { success = true });
                 }
-
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    var errors = result.Errors.Select(e => e.Description).ToList();
+                    return Ok(new { success = false, errors });
                 }
             }
 
-            return Content(@"
-                <h3>Üye Ekle</h3>
-                <form action='/Admin/AddMember' method='post'>
-                    <div class='form-group'>
-                        <label for='Email'>E-posta</label>
-                        <input type='email' class='form-control' id='Email' name='Email' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='FirstName'>Ad</label>
-                        <input type='text' class='form-control' id='FirstName' name='FirstName' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='LastName'>Soyad</label>
-                        <input type='text' class='form-control' id='LastName' name='LastName' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Address'>Adres</label>
-                        <input type='text' class='form-control' id='Address' name='Address' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Password'>Şifre</label>
-                        <input type='password' class='form-control' id='Password' name='Password' required>
-                    </div>
-                    <div class='form-group'>
-                        <label for='ConfirmPassword'>Şifreyi Onayla</label>
-                        <input type='password' class='form-control' id='ConfirmPassword' name='ConfirmPassword' required>
-                    </div>
-                    <button type='submit' class='btn btn-primary'>Ekle</button>
-                </form>");
+            var modelErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return Ok(new { success = false, errors = modelErrors });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> SetMemberRoleContent()
-        {
-            var users = await _userManager.Users.ToListAsync();
-            var model = new SetMemberRoleViewModel
-            {
-                Users = users.Select(u => new SelectListItem
-                {
-                    Value = u.Id,
-                    Text = u.Email
-                }).ToList()
-            };
 
-            var usersHtml = "<h3>Üye Rolü Belirle</h3>";
-            usersHtml += @"
-                <form action='/Admin/SetMemberRole' method='post'>
-                    <div class='form-group'>
-                        <label for='UserId'>Üye</label>
-                        <select class='form-control' id='UserId' name='UserId'>";
-            foreach (var user in model.Users)
-            {
-                usersHtml += $"<option value='{user.Value}'>{user.Text}</option>";
-            }
-            usersHtml += @"
-                        </select>
-                    </div>
-                    <div class='form-group'>
-                        <label for='Role'>Rol</label>
-                        <select class='form-control' id='Role' name='Role'>
-                            <option value='admin'>Admin</option>
-                            <option value='student'>Student</option>
-                            <option value='staff'>Staff</option>
-                        </select>
-                    </div>
-                    <button type='submit' class='btn btn-primary'>Belirle</button>
-                </form>";
 
-            return Content(usersHtml);
-        }
-
+        // POST: Admin/SetMemberRole
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SetMemberRole(SetMemberRoleViewModel model)
+        public IActionResult SetMemberRole(int userId, string role)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByIdAsync(model.UserId);
-                if (user != null)
-                {
-                    var currentRoles = await _userManager.GetRolesAsync(user);
-                    var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-                    if (!removeResult.Succeeded)
-                    {
-                        ModelState.AddModelError("", "Failed to remove user roles");
-                        return RedirectToAction("Index");
-                    }
-
-                    var addResult = await _userManager.AddToRoleAsync(user, model.Role);
-                    if (addResult.Succeeded)
-                    {
-                        return RedirectToAction("Index");
-                    }
-
-                    foreach (var error in addResult.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
-
-                ModelState.AddModelError("", "User not found");
-            }
-
-            return RedirectToAction("Index");
+            // Burada üyenin rolünü güncellemek için gerekli kodları ekle
+            return Json(new { success = true }); // Başarılı yanıt için JSON döndür
         }
-
     }
 }
-

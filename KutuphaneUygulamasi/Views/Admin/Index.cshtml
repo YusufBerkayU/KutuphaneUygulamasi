@@ -16,19 +16,19 @@
             </div>
             <ul class="list-unstyled components">
                 <li>
-                    <a href="#" id="addBook">Kitap Ekle</a>
+                    <a href="#" data-toggle="modal" data-target="#addBookModal">Kitap Ekle</a>
                 </li>
                 <li>
-                    <a href="#" id="listBooks">Kitap Listesi</a>
+                    <a href="#" data-toggle="modal" data-target="#listBooksModal">Kitap Listesi</a>
                 </li>
                 <li>
-                    <a href="#" id="listMembers">Üye Listesi</a>
+                    <a href="#" data-toggle="modal" data-target="#listMembersModal">Üye Listesi</a>
                 </li>
                 <li>
-                    <a href="#" id="addMember">Üye Ekle</a>
+                    <a href="#" data-toggle="modal" data-target="#addMemberModal">Üye Ekle</a>
                 </li>
                 <li>
-                    <a href="#" id="setMemberRole">Üye Rolü Belirle</a>
+                    <a href="#" data-toggle="modal" data-target="#setMemberRoleModal">Üye Rolü Belirle</a>
                 </li>
             </ul>
         </nav>
@@ -36,45 +36,162 @@
         <div id="content">
             <h2 id="pageTitle">Admin Panel</h2>
             <div class="line"></div>
-            <div id="mainContent">
-                <!-- AJAX içeriði burada yüklenecek -->
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBookModalLabel">Kitap Ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="bookTitle">Kitap Baþlýðý</label>
+                            <input type="text" class="form-control" id="bookTitle" placeholder="Kitap Baþlýðý">
+                        </div>
+                        <div class="form-group">
+                            <label for="bookAuthor">Yazar</label>
+                            <input type="text" class="form-control" id="bookAuthor" placeholder="Yazar">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="listBooksModal" tabindex="-1" role="dialog" aria-labelledby="listBooksModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="listBooksModalLabel">Kitap Listesi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Baþlýk</th>
+                                <th scope="col">Yazar</th>
+                                <th scope="col">Yayýn Tarihi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Kitap listesi burada dinamik olarak yüklenecek -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="listMembersModal" tabindex="-1" role="dialog" aria-labelledby="listMembersModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="listMembersModalLabel">Üye Listesi</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Ad</th>
+                                <th scope="col">Soyad</th>
+                                <th scope="col">Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Üye listesi burada dinamik olarak yüklenecek -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMemberModalLabel">Üye Ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                        <div class="form-group">
+                            <label for="Email">E-posta</label>
+                            <input type="email" class="form-control" id="Email" name="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="FirstName">Ad</label>
+                            <input type="text" class="form-control" id="FirstName" name="FirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="LastName">Soyad</label>
+                            <input type="text" class="form-control" id="LastName" name="LastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Address">Adres</label>
+                            <input type="text" class="form-control" id="Address" name="Address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="Password">Þifre</label>
+                            <input type="password" class="form-control" id="Password" name="Password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ConfirmPassword">Þifreyi Onayla</label>
+                            <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Ekle</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="setMemberRoleModal" tabindex="-1" role="dialog" aria-labelledby="setMemberRoleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="setMemberRoleModalLabel">Üye Rolü Belirle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="submitRoleForm(); return false;">
+                        <div class="form-group">
+                            <label for="UserId">Üye ID</label>
+                            <input type="text" class="form-control" id="UserId" placeholder="Üye ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="Role">Rol</label>
+                            <input type="text" class="form-control" id="Role" placeholder="Rol">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Gönder</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $("#addBook").click(function () {
-                loadContent('@Url.Action("AddBookContent", "Admin")');
-            });
-            $("#listBooks").click(function () {
-                loadContent('@Url.Action("ListBooksContent", "Admin")');
-            });
-            $("#listMembers").click(function () {
-                loadContent('@Url.Action("ListMembersContent", "Admin")');
-            });
-            $("#addMember").click(function () {
-                loadContent('@Url.Action("AddMemberContent", "Admin")');
-            });
-            $("#setMemberRole").click(function () {
-                loadContent('@Url.Action("SetMemberRoleContent", "Admin")');
-            });
-
-            function loadContent(url) {
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    success: function (data) {
-                        $('#mainContent').html(data);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('AJAX request failed:', status, error);
-                    }
-                });
-            }
-        });
-
         function submitRoleForm() {
             var formData = {
                 UserId: $('#UserId').val(),
@@ -93,6 +210,35 @@
                 }
             });
         }
+
+        $(document).ready(function () {
+            $('#addMemberForm').submit(function (event) {
+                event.preventDefault(); // Formun normal þekilde submit edilmesini engelle
+
+                var formData = $(this).serialize(); // Form verilerini al
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddMember", "Admin")',
+                    data: formData,
+                    success: function (response) {
+                        if (response.success) {
+                            $('#addMemberModal').modal('hide'); // Modal'ý kapat
+                            $('#memberAddedMessage').show(); // Baþarý mesajýný göster
+                            setTimeout(function () {
+                                $('#memberAddedMessage').fadeOut('slow'); // Mesajý gizle
+                            }, 3000); // Mesaj 3 saniye sonra kaybolur
+                        } else {
+                            // Hatalarý göster
+                            alert('Hatalar: ' + response.errors.join(', '));
+                        }
+                    }
+                });
+            });
+        });
+
+
+
     </script>
 </body>
 </html>
