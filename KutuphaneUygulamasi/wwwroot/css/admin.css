@@ -19,7 +19,7 @@ body {
 
 /* Sidebar stilleri */
 #sidebar {
-    width: 250px; /* Sidebar genişliği */
+    width: 250px;
     background: #87CEEB;
     color: #fff;
     transition: all 0.3s;
