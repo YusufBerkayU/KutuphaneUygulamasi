@@ -60,10 +60,10 @@ body {
 
 
 #content {
-    margin-left: 250px; /* Sidebar genişliği kadar boşluk bırak */
+    margin-left: 250px; 
     padding: 20px;
     transition: all 0.3s;
-    width: calc(100% - 250px); /* Sidebar genişliği kadar alandan çıkar */
+    width: calc(100% - 250px); 
     overflow-y: auto;
     position: relative;
     z-index: 2; /* İçerik üstte görünür */
