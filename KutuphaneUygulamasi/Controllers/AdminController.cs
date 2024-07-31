@@ -26,6 +26,22 @@ namespace KutuphaneUygulamasi.Controllers
             return View();
         }
 
+        // Kitap ekleme işlemi
+        public IActionResult AddBook()
+        {
+            return RedirectToAction("AddBook", "Create");
+        }
+
+
+
+
+        public IActionResult ListBooks()
+        {
+            return RedirectToAction("ListBooks", "Create");
+        }
+
+
+
         // POST: Admin/AddMember
         [HttpPost]
         public async Task<IActionResult> AddMember([FromBody] RegisterViewModel model)

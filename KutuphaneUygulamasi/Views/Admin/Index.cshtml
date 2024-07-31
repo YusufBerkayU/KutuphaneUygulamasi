@@ -21,6 +21,7 @@
                 <li>
                     <a href="#" data-toggle="modal" data-target="#listBooksModal">Kitap Listesi</a>
                 </li>
+                </li>
                 <li>
                     <a href="#" data-toggle="modal" data-target="#listMembersModal">Üye Listesi</a>
                 </li>
@@ -40,6 +41,7 @@
     </div>
 
     <!-- Modals -->
+    <!-- Add Book Modal -->
     <div class="modal fade" id="addBookModal" tabindex="-1" role="dialog" aria-labelledby="addBookModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -50,22 +52,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="bookTitle">Kitap Baþlýðý</label>
-                            <input type="text" class="form-control" id="bookTitle" placeholder="Kitap Baþlýðý">
-                        </div>
-                        <div class="form-group">
-                            <label for="bookAuthor">Yazar</label>
-                            <input type="text" class="form-control" id="bookAuthor" placeholder="Yazar">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Kaydet</button>
-                    </form>
+                    <iframe id="addBookFrame" src="@Url.Action("AddBook", "Admin")" width="100%" height="400px" style="border:none;"></iframe>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- List Books Modal -->
     <div class="modal fade" id="listBooksModal" tabindex="-1" role="dialog" aria-labelledby="listBooksModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -76,23 +69,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Baþlýk</th>
-                                <th scope="col">Yazar</th>
-                                <th scope="col">Yayýn Tarihi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Kitap listesi burada dinamik olarak yüklenecek -->
-                        </tbody>
-                    </table>
+                    <iframe id="listBooksFrame" src="@Url.Action("ListBooks", "Admin")" width="100%" height="400px" style="border:none;"></iframe>
                 </div>
             </div>
         </div>
     </div>
+
 
     <div class="modal fade" id="listMembersModal" tabindex="-1" role="dialog" aria-labelledby="listMembersModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -198,6 +180,45 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
+        $(document).ready(function () {
+            // Kitap ekleme formunu yönet
+            $("#addBookForm").submit(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/Create/AddBook', // Bu URL'yi CreateController'da ki AddBook eylemine yönlendirin
+                    data: new FormData(this),
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $("#bookAddedMessage").show();
+                        setTimeout(function () { $("#addBookModal").modal('hide'); }, 2000);
+                    },
+                    error: function () {
+                        $("#bookAddedErrorMessage").show();
+                    }
+                });
+            });
+
+            // Kitap listesi yükleme
+            $("#listBooksModal").on('shown.bs.modal', function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Create/ListBooks', // Bu URL'yi CreateController'daki ListBooks eylemine yönlendirin
+                    success: function (data) {
+                        $("#booksTableBody").html(data);
+                    }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         $(document).ready(function () {
             $('#addMemberForm').submit(function (event) {
                 event.preventDefault();
