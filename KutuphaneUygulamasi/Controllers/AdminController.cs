@@ -28,7 +28,6 @@ namespace KutuphaneUygulamasi.Controllers
 
         // POST: Admin/AddMember
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddMember([FromBody] RegisterViewModel model)
         {
             if (ModelState.IsValid)
@@ -45,19 +44,20 @@ namespace KutuphaneUygulamasi.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // Üye başarılı bir şekilde oluşturuldu
                     return Ok(new { success = true });
                 }
                 else
                 {
                     var errors = result.Errors.Select(e => e.Description).ToList();
-                    return Ok(new { success = false, errors });
+                    return BadRequest(new { success = false, errors });
                 }
             }
 
             var modelErrors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-            return Ok(new { success = false, errors = modelErrors });
+            return BadRequest(new { success = false, errors = modelErrors });
         }
+
+
 
         // POST: Admin/SetMemberRole
         [HttpPost]

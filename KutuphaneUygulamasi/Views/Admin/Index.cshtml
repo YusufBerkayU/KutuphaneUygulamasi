@@ -232,13 +232,21 @@
                         }
                     },
                     error: function (xhr, status, error) {
-                        $('#memberAddedErrorMessage').text('Bir hata oluþtu: ' + error).show();
+                        $('#memberAddedErrorMessage').text('Bir hata oluþtu: ' + xhr.responseText).show();
                         setTimeout(function () {
                             $('#memberAddedErrorMessage').hide();
                         }, 4000);
                     }
                 });
             });
+
+            // Modal kapandýktan sonra arka planý temizle
+            $('#addMemberModal').on('hidden.bs.modal', function () {
+                $('.modal-backdrop').remove();
+                $('body').removeClass('modal-open');
+                $('body').css('padding-right', '');
+            });
+
         });
 
         function submitRoleForm() {
@@ -248,7 +256,8 @@
             $.ajax({
                 url: '@Url.Action("SetMemberRole", "Admin")',
                 type: 'POST',
-                data: { UserId: userId, Role: role },
+                contentType: 'application/json',
+                data: JSON.stringify({ UserId: userId, Role: role }),
                 success: function (response) {
                     if (response.success) {
                         alert('Rol baþarýyla atandý.');
@@ -258,7 +267,7 @@
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert('Bir hata oluþtu: ' + error);
+                    alert('Bir hata oluþtu: ' + xhr.responseText);
                 }
             });
         }
