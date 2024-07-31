@@ -132,7 +132,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    
+                    <form id="addMemberForm">
                         <div class="form-group">
                             <label for="Email">E-posta</label>
                             <input type="email" class="form-control" id="Email" name="Email" required>
@@ -158,7 +158,13 @@
                             <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Ekle</button>
-                    
+                    </form>
+                    <div id="memberAddedMessage" class="alert alert-success" style="display:none;">
+                        Üye baþarýyla eklendi!
+                    </div>
+                    <div id="memberAddedErrorMessage" class="alert alert-danger" style="display:none;">
+                        Üye eklenirken bir hata oluþtu.
+                    </div>
                 </div>
             </div>
         </div>
@@ -192,53 +198,70 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        function submitRoleForm() {
-            var formData = {
-                UserId: $('#UserId').val(),
-                Role: $('#Role').val()
-            };
-            $.ajax({
-                url: '@Url.Action("SetMemberRole", "Admin")',
-                type: 'POST',
-                data: formData,
-                success: function (data) {
-                    // Baþarýlý yanýt iþleme
-                    $('#mainContent').html(data);
-                },
-                error: function (xhr, status, error) {
-                    console.error('AJAX request failed:', status, error);
-                }
-            });
-        }
-
         $(document).ready(function () {
             $('#addMemberForm').submit(function (event) {
-                event.preventDefault(); // Formun normal þekilde submit edilmesini engelle
+                event.preventDefault();
 
-                var formData = $(this).serialize(); // Form verilerini al
+                var formData = {
+                    Email: $('#Email').val(),
+                    FirstName: $('#FirstName').val(),
+                    LastName: $('#LastName').val(),
+                    Address: $('#Address').val(),
+                    Password: $('#Password').val(),
+                    ConfirmPassword: $('#ConfirmPassword').val()
+                };
 
                 $.ajax({
-                    type: 'POST',
                     url: '@Url.Action("AddMember", "Admin")',
-                    data: formData,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
                     success: function (response) {
                         if (response.success) {
-                            $('#addMemberModal').modal('hide'); // Modal'ý kapat
-                            $('#memberAddedMessage').show(); // Baþarý mesajýný göster
+                            $('#memberAddedMessage').show();
                             setTimeout(function () {
-                                $('#memberAddedMessage').fadeOut('slow'); // Mesajý gizle
-                            }, 3000); // Mesaj 3 saniye sonra kaybolur
+                                $('#memberAddedMessage').hide();
+                                $('#addMemberModal').modal('hide');
+                                $('#addMemberForm')[0].reset();
+                            }, 2000);
                         } else {
-                            // Hatalarý göster
-                            alert('Hatalar: ' + response.errors.join(', '));
+                            $('#memberAddedErrorMessage').text(response.errors.join(', ')).show();
+                            setTimeout(function () {
+                                $('#memberAddedErrorMessage').hide();
+                            }, 4000);
                         }
+                    },
+                    error: function (xhr, status, error) {
+                        $('#memberAddedErrorMessage').text('Bir hata oluþtu: ' + error).show();
+                        setTimeout(function () {
+                            $('#memberAddedErrorMessage').hide();
+                        }, 4000);
                     }
                 });
             });
         });
 
+        function submitRoleForm() {
+            var userId = $('#UserId').val();
+            var role = $('#Role').val();
 
-
+            $.ajax({
+                url: '@Url.Action("SetMemberRole", "Admin")',
+                type: 'POST',
+                data: { UserId: userId, Role: role },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Rol baþarýyla atandý.');
+                        $('#setMemberRoleModal').modal('hide');
+                    } else {
+                        alert('Rol atanýrken bir hata oluþtu.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('Bir hata oluþtu: ' + error);
+                }
+            });
+        }
     </script>
 </body>
 </html>
