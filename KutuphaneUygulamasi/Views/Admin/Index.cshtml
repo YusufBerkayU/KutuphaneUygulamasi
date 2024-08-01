@@ -21,7 +21,6 @@
                 <li>
                     <a href="#" data-toggle="modal" data-target="#listBooksModal">Kitap Listesi</a>
                 </li>
-                </li>
                 <li>
                     <a href="#" data-toggle="modal" data-target="#listMembersModal">Üye Listesi</a>
                 </li>
@@ -32,7 +31,7 @@
                     <a href="#" data-toggle="modal" data-target="#setMemberRoleModal">Üye Rolü Belirle</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-controller="Admin" asp-action="Logout">Çıkış Yap</a>
+                    <a class="nav-link" href="/Admin/Logout">Çıkış Yap</a>
                 </li>
             </ul>
         </nav>
@@ -42,8 +41,6 @@
             <div class="line"></div>
         </div>
     </div>
-
-<
 
     <!-- Modals -->
     <!-- Add Book Modal -->
@@ -57,7 +54,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <iframe id="addBookFrame" src="@Url.Action("AddBook", "Admin")" width="100%" height="400px" style="border:none;"></iframe>
+                    <iframe id="addBookFrame" src="/Admin/AddBook" width="100%" height="400px" style="border:none;"></iframe>
                 </div>
             </div>
         </div>
@@ -74,13 +71,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <iframe id="listBooksFrame" src="@Url.Action("ListBooks", "Admin")" width="100%" height="400px" style="border:none;"></iframe>
+                    <iframe id="listBooksFrame" src="/Admin/ListBooks" width="100%" height="400px" style="border:none;"></iframe>
                 </div>
             </div>
         </div>
     </div>
 
-
+    <!-- List Members Modal -->
     <div class="modal fade" id="listMembersModal" tabindex="-1" role="dialog" aria-labelledby="listMembersModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -109,6 +106,7 @@
         </div>
     </div>
 
+    <!-- Add Member Modal -->
     <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -150,13 +148,14 @@
                         Üye başarıyla eklendi!
                     </div>
                     <div id="memberAddedErrorMessage" class="alert alert-danger" style="display:none;">
-                        Üye eklenirken bir hata oluþtu.
+                        Üye eklenirken bir hata oluştu.
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Set Member Role Modal -->
     <div class="modal fade" id="setMemberRoleModal" tabindex="-1" role="dialog" aria-labelledby="setMemberRoleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -185,73 +184,64 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-         (function () {
-              Kitap ekleme formunu yönet
-             $("#addBookForm").submit(function (event) {
-                 event.preventDefault();
-                 $.ajax({
-                     type: 'POST',
-                     url: '/Create/AddBook', // Bu URL'yi CreateController'da ki AddBook eylemine yönlendirin
-                     data: new FormData(this),
-                     contentType: false,
-                     processData: false,
-                     success: function (response) {
-                         $("#bookAddedMessage").show();
-                         setTimeout(function () { $("#addBookModal").modal('hide'); }, 2000);
-                     },
-                     error: function () {
-                         $("#bookAddedErrorMessage").show();
-                     }
-                 });
-             });
-
-             // Kitap listesi yükleme
-             $("#listBooksModal").on('shown.bs.modal', function () {
-                 $.ajax({
-                     type: 'GET',
-                     url: '/Create/ListBooks', // Bu URL'yi CreateController'daki ListBooks eylemine yönlendirin
-                     success: function (data) {
-                         $("#booksTableBody").html(data);
-                     }
-
-                        (function () {
-                         // Üye listesi yükleme
-                         $("#listMembersModal").on('shown.bs.modal', function () {
-                             $.ajax({
-                                 type: 'GET',
-                                 url: '@Url.Action("ListMembers", "Admin")',
-                                 success: function (data) {
-                                     var tbody = $("#listMembersModal tbody");
-                                     tbody.empty(); // Eski içerikleri temizle
-                                     $.each(data, function (index, user) {
-                                         tbody.append(`
-                                     <tr>
-                                         <td>${index + 1}</td>
-                                         <td>${user.firstName}</td>
-                                         <td>${user.lastName}</td>
-                                         <td>${user.email}</td>
-                                    </tr>
-                                 `);
-                                     });
-                                 },
-                                 error: function () {
-                                     alert('Üye listesi yüklenirken bir hata oluştu.');
-                                 }
-                             });
-                         });
-                     });
-
-
-
-
-
-
-
-
-
         $(document).ready(function () {
+            // Add Book Form Submission
+            $("#addBookForm").submit(function (event) {
+                event.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/Create/AddBook',
+                    data: new FormData(this),
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        $("#bookAddedMessage").show();
+                        setTimeout(function () { $("#addBookModal").modal('hide'); }, 2000);
+                    },
+                    error: function () {
+                        $("#bookAddedErrorMessage").show();
+                    }
+                });
+            });
+
+            // Load Book List
+            $("#listBooksModal").on('shown.bs.modal', function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Create/ListBooks',
+                    success: function (data) {
+                        $("#booksTableBody").html(data);
+                    }
+                });
+            });
+
+            // Load Member List
+            $("#listMembersModal").on('shown.bs.modal', function () {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Admin/ListMembers',
+                    success: function (data) {
+                        var tbody = $("#listMembersModal tbody");
+                        tbody.empty();
+                        $.each(data, function (index, user) {
+                            tbody.append(`
+                                        <tr>
+                                            <td>${index + 1}</td>
+                                            <td>${user.firstName}</td>
+                                            <td>${user.lastName}</td>
+                                            <td>${user.email}</td>
+                                        </tr>
+                                    `);
+                        });
+                    },
+                    error: function () {
+                        alert('Üye listesi yüklenirken bir hata oluştu.');
+                    }
+                });
+            });
+
+            // Add Member Form Submission
             $('#addMemberForm').submit(function (event) {
-                debugger;
                 event.preventDefault();
 
                 var formData = {
@@ -264,7 +254,7 @@
                 };
 
                 $.ajax({
-                    url: '@Url.Action("AddMember", "Admin")',
+                    url: '/Admin/AddMember',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
@@ -292,13 +282,12 @@
                 });
             });
 
-            // Modal kapandıktan sonra arka planı temizle
+            // Clear modal backdrop and padding on modal hide
             $('#addMemberModal').on('hidden.bs.modal', function () {
                 $('.modal-backdrop').remove();
                 $('body').removeClass('modal-open');
                 $('body').css('padding-right', '');
             });
-
         });
 
         function submitRoleForm() {
@@ -306,7 +295,7 @@
             var role = $('#Role').val();
 
             $.ajax({
-                url: '@Url.Action("SetMemberRole", "Admin")',
+                url: '/Admin/SetMemberRole',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ UserId: userId, Role: role }),
