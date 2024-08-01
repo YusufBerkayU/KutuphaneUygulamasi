@@ -208,8 +208,33 @@
                     success: function (data) {
                         $("#booksTableBody").html(data);
                     }
-        
-        
+
+                       $(document).ready(function () {
+                        // Üye listesi yükleme
+                        $("#listMembersModal").on('shown.bs.modal', function () {
+                            $.ajax({
+                                type: 'GET',
+                                url: '@Url.Action("ListMembers", "Admin")',
+                                success: function (data) {
+                                    var tbody = $("#listMembersModal tbody");
+                                    tbody.empty(); // Eski içerikleri temizle
+                                    $.each(data, function (index, user) {
+                                        tbody.append(`
+                                    <tr>
+                                        <td>${index + 1}</td>
+                                        <td>${user.firstName}</td>
+                                        <td>${user.lastName}</td>
+                                        <td>${user.email}</td>
+                                    </tr>
+                                `);
+                                    });
+                                },
+                                error: function () {
+                                    alert('Üye listesi yüklenirken bir hata oluþtu.');
+                                }
+                            });
+                        });
+                    });
         
         
         

@@ -10,7 +10,6 @@ body {
     background: #f4f4f4;
 }
 
-/* Wrapper için stil */
 .wrapper {
     display: flex;
     height: 100vh;

@@ -74,9 +74,30 @@ namespace KutuphaneUygulamasi.Controllers
         }
 
 
+        // GET: Admin/ListMembers
+        [HttpGet]
+        public async Task<IActionResult> ListMembers()
+        {
+            var users = await _userManager.Users
+                .Select(u => new 
+                {
+                    u.Id,
+                    u.FirstName,
+                    u.LastName,
+                    u.Email
+                })
+                .ToListAsync();
 
-        // POST: Admin/SetMemberRole
-        [HttpPost]
+            return Ok(users);
+        }
+    
+
+
+
+
+
+    // POST: Admin/SetMemberRole
+    [HttpPost]
         public async Task<IActionResult> SetMemberRole(int userId, string role)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
