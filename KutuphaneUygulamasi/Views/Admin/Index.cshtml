@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
     <div class="wrapper">
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Admin Paneline Hoþgeldiniz</h3>
+                <h3>Admin Paneline HoÅŸgeldiniz</h3>
             </div>
             <ul class="list-unstyled components">
                 <li>
@@ -23,13 +23,13 @@
                 </li>
                 </li>
                 <li>
-                    <a href="#" data-toggle="modal" data-target="#listMembersModal">Üye Listesi</a>
+                    <a href="#" data-toggle="modal" data-target="#listMembersModal">Ãœye Listesi</a>
                 </li>
                 <li>
-                    <a href="#" data-toggle="modal" data-target="#addMemberModal">Üye Ekle</a>
+                    <a href="#" data-toggle="modal" data-target="#addMemberModal">Ãœye Ekle</a>
                 </li>
                 <li>
-                    <a href="#" data-toggle="modal" data-target="#setMemberRoleModal">Üye Rolü Belirle</a>
+                    <a href="#" data-toggle="modal" data-target="#setMemberRoleModal">Ãœye RolÃ¼ Belirle</a>
                 </li>
             </ul>
         </nav>
@@ -80,7 +80,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="listMembersModalLabel">Üye Listesi</h5>
+                    <h5 class="modal-title" id="listMembersModalLabel">Ãœye Listesi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -96,7 +96,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Üye listesi burada dinamik olarak yüklenecek -->
+                            <!-- Ãœye listesi burada dinamik olarak yÃ¼klenecek -->
                         </tbody>
                     </table>
                 </div>
@@ -108,7 +108,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addMemberModalLabel">Üye Ekle</h5>
+                    <h5 class="modal-title" id="addMemberModalLabel">Ãœye Ekle</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -132,20 +132,20 @@
                             <input type="text" class="form-control" id="Address" name="Address" required>
                         </div>
                         <div class="form-group">
-                            <label for="Password">Þifre</label>
+                            <label for="Password">Åžifre</label>
                             <input type="password" class="form-control" id="Password" name="Password" required>
                         </div>
                         <div class="form-group">
-                            <label for="ConfirmPassword">Þifreyi Onayla</label>
+                            <label for="ConfirmPassword">Åžifreyi Onayla</label>
                             <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Ekle</button>
                     </form>
                     <div id="memberAddedMessage" class="alert alert-success" style="display:none;">
-                        Üye baþarýyla eklendi!
+                        Ãœye baÅŸarÄ±yla eklendi!
                     </div>
                     <div id="memberAddedErrorMessage" class="alert alert-danger" style="display:none;">
-                        Üye eklenirken bir hata oluþtu.
+                        Ãœye eklenirken bir hata oluÃ¾tu.
                     </div>
                 </div>
             </div>
@@ -156,7 +156,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="setMemberRoleModalLabel">Üye Rolü Belirle</h5>
+                    <h5 class="modal-title" id="setMemberRoleModalLabel">Ãœye RolÃ¼ Belirle</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -164,14 +164,14 @@
                 <div class="modal-body">
                     <form onsubmit="submitRoleForm(); return false;">
                         <div class="form-group">
-                            <label for="UserId">Üye ID</label>
-                            <input type="text" class="form-control" id="UserId" placeholder="Üye ID">
+                            <label for="UserId">Ãœye ID</label>
+                            <input type="text" class="form-control" id="UserId" placeholder="Ãœye ID">
                         </div>
                         <div class="form-group">
                             <label for="Role">Rol</label>
                             <input type="text" class="form-control" id="Role" placeholder="Rol">
                         </div>
-                        <button type="submit" class="btn btn-primary">Gönder</button>
+                        <button type="submit" class="btn btn-primary">GÃ¶nder</button>
                     </form>
                 </div>
             </div>
@@ -180,72 +180,73 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // Kitap ekleme formunu yönet
-            $("#addBookForm").submit(function (event) {
-                event.preventDefault();
-                $.ajax({
-                    type: 'POST',
-                    url: '/Create/AddBook', // Bu URL'yi CreateController'da ki AddBook eylemine yönlendirin
-                    data: new FormData(this),
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        $("#bookAddedMessage").show();
-                        setTimeout(function () { $("#addBookModal").modal('hide'); }, 2000);
-                    },
-                    error: function () {
-                        $("#bookAddedErrorMessage").show();
-                    }
-                });
-            });
+         (function () {
+              Kitap ekleme formunu yÃ¶net
+             $("#addBookForm").submit(function (event) {
+                 event.preventDefault();
+                 $.ajax({
+                     type: 'POST',
+                     url: '/Create/AddBook', // Bu URL'yi CreateController'da ki AddBook eylemine yÃ¶nlendirin
+                     data: new FormData(this),
+                     contentType: false,
+                     processData: false,
+                     success: function (response) {
+                         $("#bookAddedMessage").show();
+                         setTimeout(function () { $("#addBookModal").modal('hide'); }, 2000);
+                     },
+                     error: function () {
+                         $("#bookAddedErrorMessage").show();
+                     }
+                 });
+             });
 
-            // Kitap listesi yükleme
-            $("#listBooksModal").on('shown.bs.modal', function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Create/ListBooks', // Bu URL'yi CreateController'daki ListBooks eylemine yönlendirin
-                    success: function (data) {
-                        $("#booksTableBody").html(data);
-                    }
+             // Kitap listesi yÃ¼kleme
+             $("#listBooksModal").on('shown.bs.modal', function () {
+                 $.ajax({
+                     type: 'GET',
+                     url: '/Create/ListBooks', // Bu URL'yi CreateController'daki ListBooks eylemine yÃ¶nlendirin
+                     success: function (data) {
+                         $("#booksTableBody").html(data);
+                     }
 
-                       $(document).ready(function () {
-                        // Üye listesi yükleme
-                        $("#listMembersModal").on('shown.bs.modal', function () {
-                            $.ajax({
-                                type: 'GET',
-                                url: '@Url.Action("ListMembers", "Admin")',
-                                success: function (data) {
-                                    var tbody = $("#listMembersModal tbody");
-                                    tbody.empty(); // Eski içerikleri temizle
-                                    $.each(data, function (index, user) {
-                                        tbody.append(`
-                                    <tr>
-                                        <td>${index + 1}</td>
-                                        <td>${user.firstName}</td>
-                                        <td>${user.lastName}</td>
-                                        <td>${user.email}</td>
+                        (function () {
+                         // Ãœye listesi yÃ¼kleme
+                         $("#listMembersModal").on('shown.bs.modal', function () {
+                             $.ajax({
+                                 type: 'GET',
+                                 url: '@Url.Action("ListMembers", "Admin")',
+                                 success: function (data) {
+                                     var tbody = $("#listMembersModal tbody");
+                                     tbody.empty(); // Eski iÃ§erikleri temizle
+                                     $.each(data, function (index, user) {
+                                         tbody.append(`
+                                     <tr>
+                                         <td>${index + 1}</td>
+                                         <td>${user.firstName}</td>
+                                         <td>${user.lastName}</td>
+                                         <td>${user.email}</td>
                                     </tr>
-                                `);
-                                    });
-                                },
-                                error: function () {
-                                    alert('Üye listesi yüklenirken bir hata oluþtu.');
-                                }
-                            });
-                        });
-                    });
-        
-        
-        
-        
-        
-        
-        
-        
-        
+                                 `);
+                                     });
+                                 },
+                                 error: function () {
+                                     alert('Ãœye listesi yÃ¼klenirken bir hata oluÅŸtu.');
+                                 }
+                             });
+                         });
+                     });
+
+
+
+
+
+
+
+
+
         $(document).ready(function () {
             $('#addMemberForm').submit(function (event) {
+                debugger;
                 event.preventDefault();
 
                 var formData = {
@@ -278,7 +279,7 @@
                         }
                     },
                     error: function (xhr, status, error) {
-                        $('#memberAddedErrorMessage').text('Bir hata oluþtu: ' + xhr.responseText).show();
+                        $('#memberAddedErrorMessage').text('Bir hata oluÅŸtu: ' + xhr.responseText).show();
                         setTimeout(function () {
                             $('#memberAddedErrorMessage').hide();
                         }, 4000);
@@ -286,7 +287,7 @@
                 });
             });
 
-            // Modal kapandýktan sonra arka planý temizle
+            // Modal kapandÄ±ktan sonra arka planÄ± temizle
             $('#addMemberModal').on('hidden.bs.modal', function () {
                 $('.modal-backdrop').remove();
                 $('body').removeClass('modal-open');
@@ -306,14 +307,14 @@
                 data: JSON.stringify({ UserId: userId, Role: role }),
                 success: function (response) {
                     if (response.success) {
-                        alert('Rol baþarýyla atandý.');
+                        alert('Rol baÅŸarÄ±yla atandÄ±.');
                         $('#setMemberRoleModal').modal('hide');
                     } else {
-                        alert('Rol atanýrken bir hata oluþtu.');
+                        alert('Rol atanÄ±rken bir hata oluÅŸtu.');
                     }
                 },
                 error: function (xhr, status, error) {
-                    alert('Bir hata oluþtu: ' + xhr.responseText);
+                    alert('Bir hata oluÅŸtu: ' + xhr.responseText);
                 }
             });
         }
