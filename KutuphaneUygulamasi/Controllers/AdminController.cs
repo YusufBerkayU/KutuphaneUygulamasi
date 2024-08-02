@@ -103,14 +103,82 @@ namespace KutuphaneUygulamasi.Controllers
 
             return Ok(users);
         }
-    
+
+        // GET: Admin/GetMember/{id}
+        [HttpGet]
+        public async Task<IActionResult> GetMember(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userModel = new 
+            {
+                user.Id,
+                user.Email,
+                user.FirstName,
+                user.LastName,
+                user.Address
+            };
+
+            return Ok(userModel);
+        }
+
+        // POST: Admin/EditMember
+        [HttpPost]
+        public async Task<IActionResult> EditMember([FromBody] ApplicationUser model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Email = model.Email;
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Address = model.Address;
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok(new { success = true });
+            }
+            else
+            {
+                return BadRequest(new { success = false });
+            }
+        }
+
+        // DELETE: Admin/DeleteMember/{id}
+        [HttpDelete]
+        public async Task<IActionResult> DeleteMember(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok(new { success = true });
+            }
+            else
+            {
+                return BadRequest(new { success = false });
+            }
+        }
 
 
 
 
 
-    // POST: Admin/SetMemberRole
-    [HttpPost]
+        // POST: Admin/SetMemberRole
+        [HttpPost]
         public async Task<IActionResult> SetMemberRole(int userId, string role)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
