@@ -148,7 +148,9 @@ namespace KutuphaneUygulamasi.Controllers
             }
             else
             {
-                return BadRequest(new { success = false });
+                // Hata mesajlarını döndür
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                return BadRequest(new { success = false, errors });
             }
         }
 
