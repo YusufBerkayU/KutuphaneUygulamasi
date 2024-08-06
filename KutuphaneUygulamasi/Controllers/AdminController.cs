@@ -155,8 +155,8 @@ namespace KutuphaneUygulamasi.Controllers
         }
 
         // DELETE: Admin/DeleteMember/{id}
-        [HttpDelete]
-        public async Task<IActionResult> DeleteMember(int id)
+        [HttpDelete("Admin/DeleteMember/{id:Guid}")]
+        public async Task<IActionResult> DeleteMember(Guid id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null)

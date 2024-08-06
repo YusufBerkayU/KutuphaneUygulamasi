@@ -361,7 +361,7 @@
             });
 
 
-            // Delete Member
+            // Üye Sil
             $(document).on('click', '.delete-btn', function () {
                 var userId = $(this).data('id');
                 $('#deleteMemberId').val(userId);
@@ -376,7 +376,7 @@
                     success: function (response) {
                         if (response.success) {
                             $('#deleteMemberModal').modal('hide');
-                            $('#listMembersModal').modal('show'); // Refresh member list
+                            $('#listMembersModal').modal('show'); // Üye listesini yenile
                         } else {
                             alert('Üye silinirken bir hata oluştu.');
                         }
