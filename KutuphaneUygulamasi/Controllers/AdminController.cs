@@ -128,7 +128,7 @@ namespace KutuphaneUygulamasi.Controllers
 
         // POST: Admin/EditMember
         [HttpPost]
-        public async Task<IActionResult> EditMember([FromBody] ApplicationUser model)
+        public async Task<IActionResult> EditMember([FromForm] ApplicationUser model)
         {
             var user = await _userManager.FindByIdAsync(model.Id.ToString());
             if (user == null)

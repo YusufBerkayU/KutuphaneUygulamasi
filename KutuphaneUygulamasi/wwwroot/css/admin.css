@@ -16,7 +16,10 @@ body {
     overflow: hidden;
 }
 
-
+.fa-check-circle {
+    font-size: 48px;
+    color: green;
+}
 
 #sidebar {
     width: 250px;
