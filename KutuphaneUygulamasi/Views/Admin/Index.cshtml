@@ -301,33 +301,36 @@
             });
 
             // Load Member List
-            $("#listMembersModal").on('shown.bs.modal', function () {
-                $.ajax({
-                    type: 'GET',
-                    url: '/Admin/ListMembers',
-                    success: function (data) {
-                        var tbody = $("#listMembersModal tbody");
-                        tbody.empty();
-                        $.each(data, function (index, user) {
-                            tbody.append(`
-                                    <tr>
-                                        <td>${index + 1}</td>
-                                        <td>${user.firstName}</td>
-                                        <td>${user.lastName}</td>
-                                        <td>${user.email}</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm edit-btn" data-id="${user.id}">Düzenle</button>
-                                            <button class="btn btn-danger btn-sm delete-btn" data-id="${user.id}">Sil</button>
-                                        </td>
-                                    </tr>
-                                `);
-                        });
-                    },
-                    error: function () {
-                        alert('Üye listesi yüklenirken bir hata oluştu.');
-                    }
+            function loadMembersList() {
+                $("#listMembersModal").on('shown.bs.modal', function () {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Admin/ListMembers',
+                        success: function (data) {
+                            var tbody = $("#listMembersModal tbody");
+                            tbody.empty();
+                            $.each(data, function (index, user) {
+                                tbody.append(`
+                                        <tr>
+                                            <td>${index + 1}</td>
+                                            <td>${user.firstName}</td>
+                                            <td>${user.lastName}</td>
+                                            <td>${user.email}</td>
+                                            <td>
+                                                <button class="btn btn-warning btn-sm edit-btn" data-id="${user.id}">Düzenle</button>
+                                                <button class="btn btn-danger btn-sm delete-btn" data-id="${user.id}">Sil</button>
+                                            </td>
+                                        </tr>
+                                    `);
+                            });
+                        },
+                        error: function () {
+                            alert('Üye listesi yüklenirken bir hata oluştu.');
+                        }
+                    });
                 });
-            });
+            }
+            loadMembersList(); // Ensure the member list is loaded when needed
 
             // Edit Member
             $(document).on('click', '.edit-btn', function () {
@@ -352,7 +355,7 @@
                 });
             });
 
-            // Form submit event
+            // Form submit event for editing member
             $('#editMemberForm').on('submit', function (event) {
                 event.preventDefault();
 
@@ -373,7 +376,7 @@
                         if (response.success) {
                             $('#editMemberModal').modal('hide');
                             alert('Üye başarıyla güncellendi!');
-                            // Sayfayı yenileyebilir veya tablodaki üyeyi güncelleyebilirsiniz.
+                            loadMembersList(); // Reload members list
                         } else {
                             alert('Güncelleme başarısız: ' + response.errors);
                         }
@@ -384,8 +387,7 @@
                 });
             });
 
-
-            // Üye Sil
+            // Delete Member
             $(document).on('click', '.delete-btn', function () {
                 var userId = $(this).data('id');
                 $('#deleteMemberId').val(userId);
@@ -402,8 +404,7 @@
                             $('#deleteMemberModal').modal('hide');
                             $('#confirmationModal').modal('show'); // Üye listesini yenile
                             $('.user[data-id="' + userId + '"]').remove();
-                            
-                            loadMembersList();
+                            loadMembersList(); // Reload members list
                         } else {
                             alert('Üye silinirken bir hata oluştu.');
                         }
@@ -487,6 +488,7 @@
             });
         }
     </script>
+
 
 </body>
 </html>
