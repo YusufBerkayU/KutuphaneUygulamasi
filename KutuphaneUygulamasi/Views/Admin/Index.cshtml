@@ -404,6 +404,9 @@
                             $('#deleteMemberModal').modal('hide');
                             $('#confirmationModal').modal('show'); // Üye listesini yenile
                             $('.user[data-id="' + userId + '"]').remove();
+                            setTimeout(function () {
+                                $('#confirmationModal').modal('hide'); // Uyarı mesajı modalı belirli bir süre sonra kapat
+                            }, 2000); // 2000 milisaniye = 2 saniye
                             loadMembersList(); // Reload members list
                         } else {
                             alert('Üye silinirken bir hata oluştu.');
