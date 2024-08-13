@@ -11,7 +11,7 @@ body, html {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: url('https://example.com/background-image.jpg') no-repeat center center fixed; /* Arka Plan Resmi */
+    background: url('/images/kütüphane.jpg') no-repeat center center fixed; /* Arka Plan Resmi */
     background-size: cover;
     color: #fff;
     text-align: center;
@@ -21,7 +21,7 @@ body, html {
     background: rgba(255, 255, 255, 0.9); /* Daha açık renkli yarı saydam arka plan */
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Daha belirgin gölge */
     max-width: 600px; /* İçeriği sınırlandırarak daha düzenli görünmesini sağlar */
     margin: 20px; /* Etrafına biraz boşluk ekler */
 }
@@ -42,13 +42,39 @@ body, html {
     background: #4ea9ff; /* Daha açık gökyüzü mavisi */
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1em;
+    padding: 12px 25px;
+    font-size: 1.1em;
     color: #fff;
     text-decoration: none;
-    transition: background 0.3s ease; /* Yumuşak geçiş efekti */
+    display: inline-block;
+    transition: background 0.3s ease, transform 0.3s ease; /* Yumuşak geçiş ve büyütme efekti */
 }
 
     .btn-primary:hover {
         background: #3399ff; /* Hover rengi */
+        transform: scale(1.05); /* Hover efekti ile butonu büyütür */
     }
+
+    .btn-primary:active {
+        background: #297bbd; /* Butona tıklanırken daha koyu renk */
+        transform: scale(0.95); /* Tıklama efekti ile butonu küçültür */
+    }
+
+@media (max-width: 768px) {
+    .welcome-content {
+        padding: 20px;
+    }
+
+        .welcome-content h1 {
+            font-size: 2.5em;
+        }
+
+        .welcome-content p {
+            font-size: 1em;
+        }
+
+    .btn-primary {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+}
