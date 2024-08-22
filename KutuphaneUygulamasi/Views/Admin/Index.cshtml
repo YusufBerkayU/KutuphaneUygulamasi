@@ -3,11 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/admin.css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            background-color: #2e2e2e;
+            color: #f5f5f5;
+        }
+        #sidebar {
+            background-color: #3c3c3c;
+            min-height: 100vh;
+        }
+        .sidebar-header h3 {
+            color: #f5f5f5;
+        }
+        .list-unstyled li a {
+            color: #f5f5f5;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .list-unstyled li a:hover {
+            background-color: #555555;
+        }
+        .nav-link {
+            color: #d1d1d1;
+        }
+        .wrapper {
+            display: flex;
+        }
+        #addMemberModal .modal-content,
+#setMemberRoleModal .modal-content {
+    background-color: #3c3c3c;
+    color: #f5f5f5;
+}
+
+#addMemberModal .modal-header, 
+#addMemberModal .modal-body, 
+#addMemberModal .modal-footer,
+#setMemberRoleModal .modal-header, 
+#setMemberRoleModal .modal-body, 
+#setMemberRoleModal .modal-footer {
+    border-color: #555555;
+}
+
+#addMemberModal .form-control,
+#setMemberRoleModal .form-control {
+    background-color: #2e2e2e;
+    color: #f5f5f5;
+    border: 1px solid #555555;
+}
+
+#addMemberModal .form-control::placeholder,
+#setMemberRoleModal .form-control::placeholder {
+    color: #d1d1d1;
+}
+
+#addMemberModal .btn-primary,
+#setMemberRoleModal .btn-primary {
+    background-color: #4a4a4a;
+    border-color: #4a4a4a;
+}
+
+#addMemberModal .btn-primary:hover,
+#setMemberRoleModal .btn-primary:hover {
+    background-color: #5a5a5a;
+    border-color: #5a5a5a;
+}
+    </style>
 </head>
 <body>
     <div class="wrapper">
@@ -38,7 +102,6 @@
         </nav>
 
         <div id="content">
-            <h2 id="pageTitle">Admin Panel</h2>
             <div class="line"></div>
         </div>
     </div>
@@ -112,7 +175,7 @@
 
 
     <!-- Edit Member Button -->
-    <button type="button" class="edit-btn btn btn-primary" data-id="1">Düzenle</button>
+    @* <button type="button" class="edit-btn btn btn-primary" data-id="1">Düzenle</button> *@
 
     <!-- Edit Member Modal -->
     <div class="modal fade" id="editMemberModal" tabindex="-1" role="dialog" aria-labelledby="editMemberModalLabel" aria-hidden="true">
