@@ -1,6 +1,5 @@
 ﻿@model KutuphaneUygulamasi.Models.ViewModels.RegisterViewModel
 
-<!-- Design by foolishdeveloper.com -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Glassmorphism Register Form Tutorial in HTML CSS</title>
@@ -9,7 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 
-<!-- Stylesheet -->
 <style media="screen">
     *,
     *:before,
@@ -29,8 +27,8 @@
     }
 
     .background {
-        width: 430px;
-        height: 520px;
+        width: 380px;
+        height: 450px;
         position: absolute;
         transform: translate(-50%, -50%);
         left: 50%;
@@ -38,27 +36,27 @@
     }
 
         .background .shape {
-            height: 200px;
-            width: 200px;
+            height: 150px;
+            width: 150px;
             position: absolute;
             border-radius: 50%;
         }
 
     .shape:first-child {
         background: linear-gradient(#1845ad, #23a2f6);
-        left: -80px;
-        top: -80px;
+        left: -50px;
+        top: -50px;
     }
 
     .shape:last-child {
         background: linear-gradient(to right, #ff512f, #f09819);
         right: -30px;
-        bottom: -80px;
+        bottom: -50px;
     }
 
     .register-container {
-        height: 620px;
-        width: 400px;
+        height: 580px;
+        width: 350px;
         background-color: rgba(255, 255, 255, 0.13);
         position: absolute;
         transform: translate(-50%, -50%);
@@ -68,37 +66,37 @@
         backdrop-filter: blur(10px);
         border: 2px solid rgba(255, 255, 255, 0.1);
         box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
-        padding: 50px 35px;
+        padding: 40px 30px;
     }
 
         .register-container h2 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 500;
-            line-height: 42px;
+            line-height: 38px;
             text-align: center;
             color: #ffffff;
         }
 
     .form-group {
-        margin-top: 20px;
+        margin-top: 15px;
     }
 
         .form-group label {
             display: block;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
             color: #ffffff;
         }
 
         .form-group input {
             display: block;
-            height: 40px; /* Adjusted height for smaller input fields */
+            height: 35px;
             width: 100%;
             background-color: rgba(255, 255, 255, 0.07);
             border-radius: 3px;
             padding: 0 10px;
-            margin-top: 8px;
-            font-size: 14px;
+            margin-top: 5px;
+            font-size: 12px;
             font-weight: 300;
             color: #ffffff;
         }
@@ -108,12 +106,12 @@
             }
 
     .btn-primary {
-        margin-top: 40px;
+        margin-top: 30px;
         width: 100%;
         background-color: #ffffff;
         color: #080710;
-        padding: 15px 0;
-        font-size: 18px;
+        padding: 12px 0;
+        font-size: 16px;
         font-weight: 600;
         border-radius: 5px;
         cursor: pointer;
@@ -126,7 +124,7 @@
 
     .register-container p {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 15px;
     }
 
     .register-container a {
@@ -147,45 +145,45 @@
     </div>
 
 <div class="register-container">
-    <h2>Register</h2>
+    <h2>Kayıt Ol</h2>
 
     <form asp-action="Register" method="post">
         <div class="form-group">
-            <label asp-for="Email"></label>
+            <label asp-for="Email">Email</label>
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Password"></label>
+            <label asp-for="Password">Şifre</label>
             <input asp-for="Password" type="password" class="form-control" />
             <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="ConfirmPassword"></label>
+            <label asp-for="ConfirmPassword">Şifreyi Doğrula</label>
             <input asp-for="ConfirmPassword" type="password" class="form-control" />
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="FirstName"></label>
+            <label asp-for="FirstName">İsim</label>
             <input asp-for="FirstName" class="form-control" />
             <span asp-validation-for="FirstName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="LastName"></label>
+            <label asp-for="LastName">Soyad</label>
             <input asp-for="LastName" class="form-control" />
             <span asp-validation-for="LastName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Address"></label>
+            <label asp-for="Address">Adres</label>
             <input asp-for="Address" class="form-control" />
             <span asp-validation-for="Address" class="text-danger"></span>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">Kayıt Ol</button>
     </form>
 
     <div>
         <p>
-            Already have an account? <a asp-action="Login">Login</a>
+            Hesabınız var mı? <a asp-action="Login">Giriş Yap</a>
         </p>
     </div>
 </div>
