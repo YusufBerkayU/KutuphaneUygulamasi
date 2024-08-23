@@ -6,7 +6,6 @@ namespace KutuphaneUygulamasi.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        // Kullanıcı ana sayfası
         public IActionResult Index()
         {
             return View();

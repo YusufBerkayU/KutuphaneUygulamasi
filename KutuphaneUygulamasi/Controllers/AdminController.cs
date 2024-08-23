@@ -1,6 +1,7 @@
 ﻿ using KutuphaneUygulamasi.Data;
 using KutuphaneUygulamasi.Models;
 using KutuphaneUygulamasi.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace KutuphaneUygulamasi.Controllers
 {
+    [Authorize(Roles = "Admin")]
+
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -180,26 +183,26 @@ namespace KutuphaneUygulamasi.Controllers
 
 
 
-        // POST: Admin/SetMemberRole
-        [HttpPost]
-        public async Task<IActionResult> SetMemberRole(int userId, string role)
-        {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            if (user == null)
-            {
-                return Json(new { success = false, message = "Üye bulunamadı." });
-            }
+        //// POST: Admin/SetMemberRole
+        //[HttpPost]
+        //public async Task<IActionResult> SetMemberRole(int userId, string role)
+        //{
+        //    var user = await _userManager.FindByIdAsync(userId.ToString());
+        //    if (user == null)
+        //    {
+        //        return Json(new { success = false, message = "Üye bulunamadı." });
+        //    }
 
-            var result = await _userManager.AddToRoleAsync(user, role);
-            if (result.Succeeded)
-            {
-                return Json(new { success = true });
-            }
-            else
-            {
-                var errors = result.Errors.Select(e => e.Description).ToList();
-                return Json(new { success = false, errors });
-            }
-        }
+        //    var result = await _userManager.AddToRoleAsync(user, role);
+        //    if (result.Succeeded)
+        //    {
+        //        return Json(new { success = true });
+        //    }
+        //    else
+        //    {
+        //        var errors = result.Errors.Select(e => e.Description).ToList();
+        //        return Json(new { success = false, errors });
+        //    }
+        
     }
 }
