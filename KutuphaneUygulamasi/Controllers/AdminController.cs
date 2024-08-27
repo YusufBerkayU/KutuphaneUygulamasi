@@ -44,15 +44,10 @@ namespace KutuphaneUygulamasi.Controllers
             return RedirectToAction("AddBook", "Create");
         }
 
-
-
-
         public IActionResult ListBooks()
         {
             return RedirectToAction("ListBooks", "Create");
         }
-
-
 
         // POST: Admin/AddMember
         [HttpPost]
