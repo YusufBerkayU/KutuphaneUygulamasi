@@ -32,10 +32,6 @@ namespace KutuphaneUygulamasi.Controllers
             return RedirectToAction("Index", "Home"); // Çıkış yapıldıktan sonra yönlendirilecek sayfa
         }
 
-
-
-
-
         // GET: Admin
         public IActionResult Index()
         {
@@ -178,10 +174,6 @@ namespace KutuphaneUygulamasi.Controllers
                 return BadRequest(new { success = false });
             }
         }
-
-
-
-
 
         //// POST: Admin/SetMemberRole
         //[HttpPost]
