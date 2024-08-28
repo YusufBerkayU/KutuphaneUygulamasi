@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 namespace KutuphaneUygulamasi.Controllers
 {
     [Authorize(Roles = "Admin")]
-
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -49,7 +48,6 @@ namespace KutuphaneUygulamasi.Controllers
             return RedirectToAction("ListBooks", "Create");
         }
 
-        // POST: Admin/AddMember
         [HttpPost]
         public async Task<IActionResult> AddMember([FromBody] RegisterViewModel model)
         {
@@ -80,8 +78,6 @@ namespace KutuphaneUygulamasi.Controllers
             return BadRequest(new { success = false, errors = modelErrors });
         }
 
-
-        // GET: Admin/ListMembers
         [HttpGet]
         public async Task<IActionResult> ListMembers()
         {
@@ -98,7 +94,6 @@ namespace KutuphaneUygulamasi.Controllers
             return Ok(users);
         }
 
-        // GET: Admin/GetMember/{id}
         [HttpGet]
         public async Task<IActionResult> GetMember(Guid id)
         {
@@ -121,7 +116,6 @@ namespace KutuphaneUygulamasi.Controllers
             return Ok(userModel);
         }
 
-        // POST: Admin/EditMember
         [HttpPost]
         public async Task<IActionResult> EditMember([FromBody] ApplicationUser model)
         {
@@ -149,7 +143,6 @@ namespace KutuphaneUygulamasi.Controllers
             }
         }
 
-        // DELETE: Admin/DeleteMember/{id}
         [HttpDelete("Admin/DeleteMember/{id:Guid}")]
         public async Task<IActionResult> DeleteMember(Guid id)
         {
