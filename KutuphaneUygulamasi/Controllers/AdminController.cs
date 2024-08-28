@@ -28,7 +28,7 @@ namespace KutuphaneUygulamasi.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home"); // Çıkış yapıldıktan sonra yönlendirilecek sayfa
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Admin
